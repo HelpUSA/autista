@@ -1,13 +1,13 @@
-name: InclusivaTEA checks
+name: SINEA build and database safety
 on:
   pull_request:
   push:
     branches: [main]
+permissions:
+  contents: read
 jobs:
-  validate:
+  frontend:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,3 +17,33 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+  database:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: sinea_ci
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_test_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d sinea_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGPASSWORD: ci_test_only
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install psql if unavailable
+        run: |
+          if ! command -v psql >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq postgresql-client
+          fi
+      - name: Apply SQL migrations
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/001_sinea_core.sql
+      - name: Assert deny-by-default RLS for all tables
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/tests/verify_rls.sql
