@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "SINEA (Demonstração)",
+    "slug": "sinea-demo",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "primaryColor": "#0f9d8e",
+    "backgroundColor": "#f2f6f8",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.helpus.sineademo"
+    },
+    "android": {
+      "package": "com.helpus.sineademo",
+      "adaptiveIcon": {
+        "backgroundColor": "#10304b"
+      }
+    },
+    "extra": {
+      "environment": "DEMO_ONLY",
+      "apiEnabled": false,
+      "clinicalRecordsEnabled": false
+    }
+  }
+}
