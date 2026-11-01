@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ActivityStudio from './activities/ActivityStudio.jsx';
 import { 
   BookOpen, 
   Smile, 
@@ -152,6 +153,13 @@ export default function App() {
               1. Aluno (Prancha CAA & Rotina)
             </button>
             <button
+              onClick={() => setActiveTab('atividades')}
+              className={`flex items-center gap-2 pb-2 px-1 border-b-2 whitespace-nowrap transition-colors ${activeTab === 'atividades' ? 'border-sky-400 text-sky-400' : 'border-transparent text-slate-400 hover:text-slate-200'}`}
+            >
+              <BookOpen className="w-4 h-4" />
+              Atividades Interativas
+            </button>
+            <button
               onClick={() => setActiveTab('mediador')}
               className={`flex items-center gap-2 pb-2 px-1 border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === 'mediador'
@@ -201,6 +209,10 @@ export default function App() {
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div role="note" className="mb-5 rounded-xl border border-amber-700/60 bg-amber-950/50 p-3 text-sm text-amber-100">
+          Ambiente demonstrativo público, com exemplos fictícios. Não informe nomes reais, laudos, informações de saúde ou outros dados de estudantes.
+        </div>
+        {activeTab === 'atividades' && <ActivityStudio />}
         
         {/* TAB 1: VISÃO DO ALUNO */}
         {activeTab === 'aluno' && (
