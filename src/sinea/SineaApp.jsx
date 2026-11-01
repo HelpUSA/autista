@@ -62,8 +62,8 @@ function Shell({ role,screen,setScreen,exit,children }) {
     </main>
     <nav aria-label="Navegação principal" className="fixed z-30 bottom-0 inset-x-0 border-t border-slate-200 bg-white shadow-lg"><div className="mx-auto max-w-3xl grid grid-cols-5">
       {nav.map(item=>{const Icon=item.icon;const allow=canPreview(role,item.id); const active=screen===item.id||(screen==='prontuario'&&item.id==='estudantes');
-        return <button key={item.id} type="button" aria-current={active?'page':undefined} disabled={!allow} onClick={()=>setScreen(item.id)} className={cn('py-2 min-h-19 flex flex-col items-center justify-center text-[11px] sm:text-xs font-semibold focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-600',allow?'':'opacity-30',active?'text-teal-800':'text-slate-600')}>
-          <span className={cn('grid place-items-center',item.id==='registro'?'w-13 h-13 bg-teal-600 text-white rounded-full -mt-5 border-4 border-white shadow':'w-9 h-9')}><Icon size={item.id==='registro'?25:22}/></span>{item.title}
+        return <button key={item.id} type="button" aria-current={active?'page':undefined} disabled={!allow} onClick={()=>setScreen(item.id)} className={cn('py-2 min-h-[76px] flex flex-col items-center justify-center text-[11px] sm:text-xs font-semibold focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-600',allow?'':'opacity-30',active?'text-teal-800':'text-slate-600')}>
+          <span className={cn('grid place-items-center',item.id==='registro'?'w-12 h-12 bg-teal-600 text-white rounded-full -mt-5 border-4 border-white shadow':'w-9 h-9')}><Icon size={item.id==='registro'?25:22}/></span>{item.title}
         </button>;
       })}</div></nav>
   </div>;
@@ -101,7 +101,7 @@ function Evolution() {return <><Heading overline="Acompanhamento de metas">Evolu
   <div className="grid sm:grid-cols-2 gap-3">{dimensions.map(d=><div key={d.name} className={cn(card,'p-5')}><p className="text-sm text-slate-700">{d.name}</p><p className="font-black text-[#10304b] text-3xl my-2">{d.value}% <span className="text-xs text-teal-700 font-semibold">+{d.change} pontos</span></p><Meter value={d.value} color={d.color}/></div>)}</div>
   <p className="mt-4 text-sm text-slate-600">Habilidades, dificuldades e sugestões são apresentados apenas como exemplos. Nenhuma inferência clínica é realizada.</p></>;
 }
-function RecordPage({calm}) {return <><Heading overline="Registro diário">Registrar atendimento</Heading><div className={cn(card,'max-w-2xl p-5 sm:p-7')}>
+function LegacyRecordPreview({calm}) {return <><Heading overline="Registro diário">Registrar atendimento</Heading><div className={cn(card,'max-w-2xl p-5 sm:p-7')}>
   <p className="bg-amber-50 text-amber-900 border border-amber-200 rounded-xl p-4 text-sm mb-5">Formulário ilustrativo desativado. Não é permitido coletar registros, imagens, voz ou dados reais nesta demonstração.</p>
   <fieldset disabled className="space-y-4"><label className="block text-sm font-semibold">Estudante <select className={cn(field,'mt-1')}><option>Lucas Martins (fictício)</option></select></label>
     <label className="block text-sm font-semibold">Modalidade <select className={cn(field,'mt-1')}><option>AEE individual</option></select></label>
