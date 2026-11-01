@@ -26,7 +26,7 @@ jobs:
           node-version: '22'
       - name: Install isolated API dependencies (lockfile not yet pinned)
         working-directory: server
-        run: npm install --no-package-lock --no-fund
+        run: npm install --no-fund
       - name: Run protected API authorization tests
         working-directory: server
         run: npm test
