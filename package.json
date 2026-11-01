@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/activities/*.test.js src/sinea/*.test.js"
+    "test": "node --test src/activities/*.test.js src/sinea/*.test.js src/domain/*.test.js"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
