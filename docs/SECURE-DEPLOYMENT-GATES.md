@@ -1,11 +1,14 @@
 # SINEA — Segurança e persistência: pré-condições para uso de dados reais
 
 ## Status
-A migração SQL nesta branch é um **esqueleto com acesso negado por padrão**:
-tabelas, integridade referencial, isolamento estrutural via chave `tenant_id`,
-idempotência de registros offline e auditoria append-only. Não há API conectada
-nem políticas RLS que permitam consulta. É intencional: o demonstrativo deve
-permanecer sem dados sensíveis até homologação.
+As migrações 001–003 agora fornecem estrutura institucional, documental,
+editorial, offline e de IA, com **RLS forçada**. A migração 002 adiciona políticas
+de **leitura mínima** por instituição, escola, papel e vínculo profissional,
+destinadas a um papel PostgreSQL `sinea_api` sem LOGIN. As tabelas adicionais
+da migração 003 continuam sem permissões. **Não existem grants de escrita para
+a API, nem credenciais de execução configuradas aqui.** A API Node exige OIDC,
+MFA para registros nominais e está com gravação DESABILITADA. A interface web
+ainda usa somente dados fictícios. Nada disso autoriza dados sensíveis reais.
 
 ## Implementar antes de liberar produção
 1. Instalar identidade corporativa (OIDC) com autenticação individual, MFA para
