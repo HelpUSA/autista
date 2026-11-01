@@ -1,4 +1,4 @@
-name: SINEA build and database safety
+name: SINEA build database security
 on:
   pull_request:
   push:
@@ -17,6 +17,21 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Audit all dependencies (diagnostic, nonblocking)
+        run: |
+          npm audit --json > npm-audit.json || true
+          node scripts/audit-report.mjs npm-audit.json
+      - name: Block high/critical production dependency advisories
+        run: npm audit --omit=dev --audit-level=high
   database:
     runs-on: ubuntu-latest
     services:
