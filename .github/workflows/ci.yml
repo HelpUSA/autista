@@ -76,5 +76,9 @@ jobs:
           fi
       - name: Apply SQL migrations
         run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/001_sinea_core.sql
-      - name: Assert deny-by-default RLS for all tables
+      - name: Apply read-only scoped RLS
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/002_scoped_read_rls.sql
+      - name: Assert forced RLS, scoped read and no write grants
         run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/tests/verify_rls.sql
+      - name: Prove cross-tenant and clinical document isolation
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/tests/verify_tenant_isolation.sql
