@@ -144,21 +144,21 @@ function NetworkPage() {return <><div className="bg-[#10304b] rounded-2xl p-6 te
     <div className={cn(card,'p-5')}><h2 className="font-extrabold text-[#10304b] mb-4">Distribuição por necessidades (fictícia)</h2><div className="space-y-3">{networkNeeds.map(m=><div key={m.label}><div className="flex justify-between text-xs mb-1"><span>{m.label}</span><strong>{m.percent}%</strong></div><Meter value={m.percent} color={m.color}/></div>)}</div></div>
   </div><p className="text-xs text-slate-500 mt-4">As regras reais de supressão de pequenas contagens, anonimização e exportação dependem de análise de risco.</p></>;
 }
-function RecordPage({student,back,activity}) {
+function RecordPage({student,back,activity,role}) {
   const [tab,setTab]=useState('geral');useEffect(()=>setTab('geral'),[student.id]);
   return <><button onClick={back} className={cn(secondary,'mb-4')}><ArrowLeft size={16} className="inline mr-2"/>Voltar aos estudantes</button>
     <div className={cn(card,'p-5 mb-4')}><div className="flex items-center gap-3"><Avatar st={student}/><div><h1 className="font-extrabold text-xl text-[#10304b]">{student.name}</h1><p className="text-sm text-slate-600">{student.age} anos · {student.className} · {student.school}</p></div></div><div className="flex flex-wrap gap-2 mt-4">{student.tags.map(t=><Tag name={t} key={t}/>)}</div></div>
     <Stats values={[{label:'Anos de histórico',value:student.historyYears},{label:'Atendimentos',value:student.appointments},{label:'Metas PEI',value:student.goalPercent+'%'}]}/>
-    <div className="flex gap-2 overflow-x-auto my-5 pb-2" role="tablist" aria-label="Prontuário">{[['geral','Visão geral'],['atendimentos','Atendimentos'],['planos','Planos'],['trajetoria','Trajetória'],['canto','Canto da Calma'],['suporte','Suporte'],['evolucao','Evolução']].map(([id,label])=><button key={id} type="button" role="tab" aria-selected={tab===id} onClick={()=>setTab(id)} className={cn('whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold',tab===id?'bg-teal-700 text-white':'bg-white border text-slate-700')}>{label}</button>)}</div>
+    <div className="flex gap-2 overflow-x-auto my-5 pb-2" role="tablist" aria-label="Prontuário">{[['geral','Visão geral'],['atendimentos','Atendimentos'],['planos','Planos'],['trajetoria','Trajetória'],['canto','Canto da Calma'],['suporte','Suporte'],['evolucao','Evolução']].filter(([id])=>role!=='mediador'||['geral','atendimentos','planos','canto'].includes(id)).map(([id,label])=><button key={id} type="button" role="tab" aria-selected={tab===id} onClick={()=>setTab(id)} className={cn('whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold',tab===id?'bg-teal-700 text-white':'bg-white border text-slate-700')}>{label}</button>)}</div>
     {tab==='geral'&&<div className="grid md:grid-cols-2 gap-4"><div className={cn(card,'p-5')}><h2 className="font-bold text-[#10304b] mb-3">Apoios e acessibilidade</h2><div className="flex flex-wrap gap-2">{student.needs.map(n=><Pill kind="grey" key={n}>{n}</Pill>)}</div></div>
-      <div className={cn(card,'p-5')}><h2 className="font-bold text-[#10304b] mb-3">Documentos e laudos</h2><p className="text-xs text-amber-800 mb-3">Somente títulos fictícios: arquivos inacessíveis.</p>{documents.map(d=><div className="flex items-center gap-2 py-2 text-sm" key={d.id}><FileText size={17} className="text-teal-700"/><span>{d.title} · {d.date}</span></div>)}</div>
+      {role==='aee'&&<div className={cn(card,'p-5')}><h2 className="font-bold text-[#10304b] mb-3">Documentos e laudos</h2><p className="text-xs text-amber-800 mb-3">Somente títulos fictícios: arquivos inacessíveis.</p>{documents.map(d=><div className="flex items-center gap-2 py-2 text-sm" key={d.id}><FileText size={17} className="text-teal-700"/><span>{d.title} · {d.date}</span></div>)}</div>}
       <div className={cn(card,'md:col-span-2 p-5')}><h2 className="font-bold text-[#10304b] mb-2">Atividades acessíveis</h2><p className="text-sm text-slate-600 mb-3">Módulo complementar para o aluno, sem acesso a laudos ou relatórios clínicos.</p><button type="button" onClick={activity} className={primary}>Explorar atividades</button></div></div>}
     {tab==='atendimentos'&&<div className={cn(card,'p-5')}><h2 className="font-bold mb-3">Atendimentos fictícios</h2>{agenda.filter(a=>a.studentId===student.id).map(a=><p key={a.id} className="py-3 text-sm border-b">{a.time} · {a.title} · {a.location}</p>)}</div>}
     {tab==='planos'&&<Plans selectedStudent={student}/>}
     {tab==='trajetoria'&&<Timeline/>}
     {tab==='canto'&&<CalmRoom/>}
-    {tab==='suporte'&&<SupportPage/>}
-    {tab==='evolucao'&&<Evolution/>}
+    {tab==='suporte'&&role!=='mediador'&&<SupportPage/>}
+    {tab==='evolucao'&&role!=='mediador'&&<Evolution/>}
   </>;
 }
 export default function SineaApp() {
@@ -170,7 +170,7 @@ export default function SineaApp() {
   return <Shell role={role} screen={screen} setScreen={setScreen} exit={()=>setScreen('login')}>
     {screen==='inicio'&&<HomePage open={open}/>}
     {screen==='estudantes'&&<StudentsPage open={open}/>}
-    {screen==='prontuario'&&<RecordPage student={students.find(s=>s.id===studentId)||students[0]} back={()=>setScreen('estudantes')} activity={()=>setScreen('atividades')}/>}
+    {screen==='prontuario'&&<RecordPage student={students.find(s=>s.id===studentId)||students[0]} back={()=>setScreen('estudantes')} activity={()=>setScreen('atividades')} role={role}/>}
     {screen==='registro'&&<RecordPagePlaceholder/>}
     {screen==='planos'&&<Plans/>}
     {screen==='painel'&&<NetworkPage/>}
