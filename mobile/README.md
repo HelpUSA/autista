@@ -26,3 +26,18 @@ do Antigravity antes de homologar. Não publicar este esqueleto nas lojas.
 5. Sem informação sensível em notificações ou logs; avaliação OWASP MASVS.
 6. Auditoria WCAG 2.1 AA e práticas de acessibilidade nativas iOS/Android.
 7. Ambientes produção/homologação/desenvolvimento separados, infraestrutura no Brasil.
+
+# SINEA Mobile — Gates para sincronização offline
+
+O código de `mobile/src/offlineEngine.mjs` implementa **apenas o motor puro da fila**.
+Ele rejeita a criação de uma operação se o adaptador de storage criptografado
+não confirmar prontidão. O prefixo `enc:v1:` é um marcador de contrato, **não
+é criptografia**: a cifragem real deve acontecer no módulo nativo.
+
+Antes de habilitar dados reais:
+- Validar Android Keystore e iOS Keychain/biometria/PIN.
+- Integrar SQLCipher e chaves com ciclo de vida seguro; não usar AsyncStorage em claro.
+- Testar rede instável, conflitos, retransmissão, idempotência, expiração de sessão,
+  cancelamento de conta, dispositivo perdido e remoção remota.
+- Fazer revisão de segurança móvel e pen test, armazenamento no Brasil e contratos LGPD.
+- Não usar esse protótipo Expo como aplicação de produção ou prova de compliance.
