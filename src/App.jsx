@@ -140,7 +140,7 @@ export default function App() {
 
         {/* Navigation Tabs */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/60">
-          <nav className="flex space-x-2 md:space-x-8 overflow-x-auto py-2 text-sm font-medium">
+          <nav aria-label="Navegação principal" className="flex space-x-2 md:space-x-8 overflow-x-auto py-2 text-sm font-medium">
             <button
               onClick={() => setActiveTab('aluno')}
               className={`flex items-center gap-2 pb-2 px-1 border-b-2 whitespace-nowrap transition-colors ${
@@ -192,17 +192,7 @@ export default function App() {
               <Heart className="w-4 h-4" />
               4. Família & Terapeutas
             </button>
-            <button
-              onClick={() => setActiveTab('ai_bridge')}
-              className={`flex items-center gap-2 pb-2 px-1 border-b-2 whitespace-nowrap transition-colors ${
-                activeTab === 'ai_bridge'
-                  ? 'border-indigo-400 text-indigo-400'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Sparkles className="w-4 h-4" />
-              5. AI Bridge & ChatGPT
-            </button>
+
           </nav>
         </div>
       </header>
@@ -342,6 +332,10 @@ export default function App() {
                 </h3>
 
                 <form onSubmit={addSupportLog} className="space-y-4 text-sm">
+                  <p id="demo-form-disabled" role="note" className="rounded-lg bg-amber-900/40 border border-amber-700/50 p-3 text-xs text-amber-100">
+                    Registro desativado no ambiente público de demonstração. Os exemplos abaixo são fictícios.
+                  </p>
+                  <fieldset disabled aria-describedby="demo-form-disabled" className="space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-slate-300 mb-1">Aluno Selecionado</label>
                     <select 
@@ -419,6 +413,7 @@ export default function App() {
                     <Send className="w-3.5 h-3.5" />
                     Registrar no Diário de Bordo
                   </button>
+                  </fieldset>
                 </form>
               </div>
 
@@ -581,83 +576,6 @@ export default function App() {
                   "Hoje o Lucas dormiu bem, tomou a medicação no horário e estava muito animado para a aula de artes."
                 </p>
                 <span className="text-[10px] text-slate-400 block">Mariana Silva (Mãe) • Hoje às 07:40</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 5: AI BRIDGE & CHATGPT */}
-        {activeTab === 'ai_bridge' && (
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-slate-900 border border-indigo-800/40 p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400">Integração Local Multi-Agente</span>
-                  <h2 className="text-xl font-bold text-white mt-1 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-indigo-400" />
-                    AI Bridge Local • Antigravity ⇄ ChatGPT
-                  </h2>
-                  <p className="text-sm text-slate-400 mt-0.5">
-                    Canal de comunicação bidirecional em tempo real entre Antigravity e a sessão ativa do ChatGPT.
-                  </p>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-semibold flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  Bridge Ativa
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Dados da Conexão */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                <h3 className="font-bold text-white text-sm">Parâmetros da Sessão Ativa</h3>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between py-1.5 border-b border-slate-800">
-                    <span className="text-slate-400">Domínio Oficial:</span>
-                    <strong className="text-emerald-400">autista.helpusbr.com</strong>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-slate-800">
-                    <span className="text-slate-400">Repositório GitHub:</span>
-                    <a href="https://github.com/HelpUSA/autista" target="_blank" rel="noreferrer" className="text-sky-400 hover:underline">
-                      HelpUSA/autista
-                    </a>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-slate-800">
-                    <span className="text-slate-400">Pasta Local:</span>
-                    <code className="text-indigo-300">d:\AntiG\autista</code>
-                  </div>
-                  <div className="flex justify-between py-1.5 border-b border-slate-800">
-                    <span className="text-slate-400">Conversa Alvo ChatGPT:</span>
-                    <code className="text-slate-300">6ae73748-f36c-83e9-b365-86720fc899c2</code>
-                  </div>
-                  <div className="flex justify-between py-1.5">
-                    <span className="text-slate-400">Antigravity Source ID:</span>
-                    <code className="text-slate-300">b7ff9691-1204-4140-93c7-6e2e656446cc</code>
-                  </div>
-                </div>
-              </div>
-
-              {/* Envelope Protocol */}
-              <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 space-y-3">
-                <h3 className="font-bold text-white text-sm">Envelope de Comunicação JSON</h3>
-                <p className="text-xs text-slate-400">
-                  Formato padrão para o ChatGPT emitir instruções que o Tampermonkey/Extension captura e despacha ao Antigravity:
-                </p>
-                <pre className="bg-slate-950 p-3 rounded-xl text-[11px] text-sky-300 overflow-x-auto border border-slate-800">
-{`{
-  "schema": "ai_bridge_local.envelope",
-  "schema_version": 1,
-  "command_id": "HU-CHATGPT-AUTISTA-001",
-  "action": "send-chat-message",
-  "delivery_kind": "inter_agent_message",
-  "source_chat_id": "6ae73748-f36c-83e9-b365-86720fc899c2",
-  "target_chat_id": "b7ff9691-1204-4140-93c7-6e2e656446cc",
-  "from_agent": "chatgpt",
-  "to_agent": "antigravity",
-  "message": "Instruções técnicas para o Antigravity..."
-}`}
-                </pre>
               </div>
             </div>
           </div>
