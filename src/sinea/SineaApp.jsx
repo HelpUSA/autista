@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import ActivityStudio from '../activities/ActivityStudio.jsx';
 import VisualRoutine from './VisualRoutine.jsx';
+import PlanStudio from './PlanStudio.jsx';
 import { profiles, students, agenda, pending, documents, timeline, planGoals,
   planTypes, progressSeries, dimensions, networkMetrics, networkMonthly,
   networkNeeds, calmItems, calmTriggers, DEMO_NOTICE } from './demoData.js';
@@ -94,7 +95,7 @@ function Plans({selectedStudent=students[0]}) {
   return <><Heading overline="Metas observáveis">Planos individualizados</Heading><div className="flex flex-wrap gap-2 mb-5">{planTypes.map(item=><button key={item} type="button" aria-pressed={type===item} onClick={()=>setType(item)} className={type===item?primary:secondary}>{item}</button>)}</div>
   <div className={cn(card,'p-5 mb-4')}><div className="flex flex-wrap justify-between gap-3"><div><p className="text-xs text-slate-500">{type} 2026 (exemplo)</p><h3 className="text-xl font-extrabold text-[#10304b]">{selectedStudent.name}</h3></div><Pill>Em andamento</Pill></div>
     <p className="mt-4 text-sm font-bold text-[#10304b]">{selectedStudent.goalPercent}% das metas · próxima revisão {selectedStudent.nextReview}</p><Meter value={selectedStudent.goalPercent}/><p className="text-xs text-slate-500 mt-2">Progresso ilustrativo sujeito a rubrica e validação do professor.</p></div>
-  <div className="grid lg:grid-cols-3 gap-3">{planGoals.map(goal=><div key={goal.id} className={cn(card,'p-5')}><p className="text-xs font-bold" style={{color:goal.color}}>{goal.area}</p><p className="font-semibold text-[#10304b] text-sm my-3 min-h-14">{goal.title}</p><div className="flex justify-between text-sm mb-2"><span className="text-slate-600">Progresso</span><strong>{goal.progress}%</strong></div><Meter value={goal.progress} color={goal.color}/><p className="text-xs text-slate-600 mt-4">{goal.owner} · {goal.due}</p></div>)}</div></>;
+  <div className="grid lg:grid-cols-3 gap-3">{planGoals.map(goal=><div key={goal.id} className={cn(card,'p-5')}><p className="text-xs font-bold" style={{color:goal.color}}>{goal.area}</p><p className="font-semibold text-[#10304b] text-sm my-3 min-h-14">{goal.title}</p><div className="flex justify-between text-sm mb-2"><span className="text-slate-600">Progresso</span><strong>{goal.progress}%</strong></div><Meter value={goal.progress} color={goal.color}/><p className="text-xs text-slate-600 mt-4">{goal.owner} · {goal.due}</p></div>)}</div><PlanStudio key={type} kind={type}/></>;
 }
 function Timeline() {return <div className={cn(card,'p-5')}><h3 className="text-lg font-extrabold text-[#10304b] mb-4">Trajetória escolar</h3><ol className="border-l-2 border-teal-300 ml-2 pl-5 space-y-5">{timeline.map(t=><li key={t.id}><p className="text-xs text-teal-700 font-bold">{t.year}</p><strong className="text-sm text-[#10304b]">{t.title}</strong><p className="text-sm text-slate-600">{t.detail}</p></li>)}</ol><p className="text-xs mt-5 text-slate-500">Transferência real de prontuário requer base jurídica, registro e autorização.</p></div>;}
 function Evolution() {return <><Heading overline="Acompanhamento de metas">Evolução da aprendizagem</Heading>
