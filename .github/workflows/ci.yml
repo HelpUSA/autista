@@ -78,6 +78,10 @@ jobs:
         run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/001_sinea_core.sql
       - name: Apply read-only scoped RLS
         run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/002_scoped_read_rls.sql
+      - name: Apply additional SINEA catalog and workflows schema
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/migrations/003_extended_domain.sql
+      - name: Verify protected extended tables
+        run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/tests/verify_extended_schema.sql
       - name: Assert forced RLS, scoped read and no write grants
         run: psql -h 127.0.0.1 -U postgres -d sinea_ci -v ON_ERROR_STOP=1 -f database/tests/verify_rls.sql
       - name: Prove cross-tenant and clinical document isolation
