@@ -1,0 +1,9 @@
+{
+  "name": "sinea-secure-api",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {"node": ">=22"},
+  "scripts": {"test": "node --test test/*.test.mjs", "start": "node src/index.mjs"},
+  "dependencies": {"jose": "^6.1.0", "pg": "^8.16.0"}
+}
