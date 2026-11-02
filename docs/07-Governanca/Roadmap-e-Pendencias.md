@@ -50,3 +50,8 @@ GitHub #3 (identidade), #4 (planos), #5 (catálogo), #6 (LGPD), #9 (mobile), #10
 Produção com dados reais, app nas lojas, RAG operacional, criptografia offline, certificado efetivo, conformidade integral LGPD ou aceitação da editora sem evidência independente.
 
 Ver [[06-Operacao/Testes-e-Homologacao]].
+
+## Iteração em 01/11/2026
+
+- [x] Regra central para navegação demonstrativa por perfil, com testes positivos e negativos, mantida em `src/sinea/navigationPolicy.js`.
+- [ ] Revisar matrizes funcionais de permissões com Evoluce e validar os papéis no app Expo; backend segue como fonte final de autorização.

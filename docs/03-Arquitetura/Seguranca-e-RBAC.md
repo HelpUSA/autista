@@ -36,3 +36,10 @@ Controle de acesso não é esconder botão. Usuário autenticado é avaliado por
 IdP com MFA, revogação, sessão expirada, auditoria de cada acesso, testes de violação horizontal/vertical, account recovery e observabilidade. Testar troca de rede, profissional com duas escolas, transferência e revogação de vínculo. Os testes locais atuais usam identidades sintéticas.
 
 Relacionamentos: [[05-Seguranca/Threat-Model]], [[05-Seguranca/Privacidade-e-LGPD]].
+
+## Política de navegação do demonstrativo (atualização 2026-11-01)
+
+O módulo `src/sinea/navigationPolicy.js` define explicitamente as telas por perfil no web V2, com abordagem de negação por padrão. Suas funções `canOpenDemoScreen`, `resolveDemoScreen`, `visibleDemoNavigation` e `studentVisibleToDemoRole` são exercitadas por testes negativos. A Secretaria vê apenas o painel ilustrativo; a família não abre registros profissionais, suporte de IA ou painel agregado e acessa somente um estudante **fictício**. 
+
+> [!danger] Limite do mecanismo
+> Essas regras são apenas de UI e não certificam autorização real. Todo o conteúdo demonstrativo é embarcado no JavaScript, inclusive os objetos fictícios. A API ainda precisa garantir acesso por vínculo verificado, tenant e RLS antes de qualquer dado de estudantes reais. Não há autenticação por seleção visual de perfil.

@@ -32,3 +32,11 @@ tags:
 
 ## Pendências herdadas
 Issues #9 (mobile), #10 (backend), #11 (homologação), #13 (Vite/esbuild), #14 (infraestrutura Brasil). O próprio frontend V2 não conclui segurança de dados reais, integração API, workflows persistentes nem operação mobile.
+
+## Verificação de navegação por perfis (atualização)
+
+- [ ] Reexecutar `npm test` incluindo `src/sinea/navigationPolicy.test.js`.
+- [ ] Conferir perfil Secretaria: somente Painel, sem acesso ao prontuário pela marca, menu, botões ou atalhos.
+- [ ] Conferir perfil Família: apenas estudante fictício selecionado, sem Registrar, painel da rede ou Suporte IA.
+- [ ] Conferir AEE, Mediação e Coordenação com expectativas da matriz pedagógica, especialmente edição e leitura de planos.
+- [ ] Confirmar que controles são exclusivamente de demonstração, sem backend ou dados sensíveis reais.

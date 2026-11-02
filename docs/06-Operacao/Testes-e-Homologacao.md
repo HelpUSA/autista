@@ -43,3 +43,7 @@ Visualização de prontuário fictício, plano PEI/PDI/PAEE, diário dividido em
 - [ ] Validação operacional e aceite de cliente documentados.
 
 Até lá, `status=DEMO_ONLY`.
+
+## Regressão adicional — perfis na interface web
+
+A função central de controle demonstrativo deve negar telas não autorizadas por perfil e retornar a tela inicial permitida para uma rota inválida. Executar `src/sinea/navigationPolicy.test.js` na CI e simular navegação visual em todos os perfis. Testar especificamente Secretaria, Família e IDs de estudantes desconhecidos. Essa etapa não substitui testes RBAC/RLS sobre identidades e vínculos reais.
