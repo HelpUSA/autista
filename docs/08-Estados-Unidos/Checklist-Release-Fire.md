@@ -65,3 +65,7 @@ tags: [sinea, amazon, appstore, android, testing, rollout]
 ACK na conversa `fde722e0-8605-4bfd-8b30-5be3d281f489`; git SHA, testes Node, logs Expo Doctor, ID EAS, SHA-256 do APK, Manifest de permissões, dispositivos Fire e Fire OS, captura em três idiomas, checklist jurídico e decisão GO/NO-GO.
 
 Relacionamentos: [[08-Estados-Unidos/Produto-Fire-Activities]], [[08-Estados-Unidos/Listagem-Amazon-Trilingue]], [[06-Operacao/Handoff-Antigravity]].
+
+## CI adicional — Expo/Metro antes do APK
+
+A PR #20 inclui `.github/workflows/fire-native-preflight.yml`, acionado por mudanças em `mobile/fire/`. Ele resolve dependências Expo, roda `npm test`, `expo-doctor`, e gera **somente** um bundle JS Android por `expo export`, além de arquivar um candidato `package-lock.json` e a configuração Expo pública. Esse passo valida a compilação de JavaScript mobile em runner Linux, sem criar ou assinar APK e sem atestar o Manifest mesclado. Se falhar, não liberar publicação; corrigir os problemas de SDK e reexecutar. O lockfile candidato precisa ser revisado e commitado antes de builds reproduzíveis.

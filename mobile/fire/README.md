@@ -40,3 +40,6 @@ Não usar login/registro escolar, telemetria, SDK de terceiros não auditado, da
 
 ## Estado transiente de atividades
 `lessonState.mjs` controla respostas, pausa, avanço, conclusão e reinício sem registrar dados pessoais. O sexto exercício termina em uma tela de conclusão, sem reinício automático. `lessonState.test.mjs` percorre os 5 temas nos três idiomas e rejeita transições inválidas.
+
+## Pré-validação de ambiente no GitHub Actions
+A workflow `fire-native-preflight.yml` tenta instalar as dependências, executar o Expo Doctor e exportar o bundle JavaScript para Android. **Esse export não é APK, não testa Fire OS e não demonstra ausência de rede no binário.** Guardar os artefatos com lockfile candidato e `expo-config-public.json`; exigir inspeção de APK real pelo Antigravity antes de distribuição.

@@ -1,0 +1,52 @@
+name: SINEA Fire JS and Expo preflight
+on:
+  pull_request:
+    paths:
+      - 'mobile/fire/**'
+      - '.github/workflows/fire-native-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fire-preflight:
+    name: Fire JS bundle and SDK consistency (not signed APK)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: mobile/fire
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve Expo dependencies and produce reproducible lockfile candidate
+        run: npm install --no-fund --no-audit
+      - name: Run pure educational and child-privacy contract tests
+        run: npm test
+      - name: Check Expo SDK/React Native package alignment
+        run: npx --yes expo-doctor@latest
+      - name: Export Android JS bundle (NOT an APK)
+        run: npx expo export --platform android --output-dir dist-preflight
+      - name: Materialize public Expo config for native manifest verification
+        run: npx expo config --type public --json > expo-config-public.json
+      - name: Check internal-only app metadata
+        run: |
+          node --input-type=module -e '
+          import fs from "node:fs";
+          const c=JSON.parse(fs.readFileSync("expo-config-public.json","utf8"));
+          if(c.extra?.storeSubmissionAuthorized!==false||c.extra?.childrenDataEnabled!==false||
+             c.android?.package!=="com.helpus.sinea.activities.preview"||
+             c.updates?.enabled!==false)throw Error("Fire release gate failed");
+          console.log("Internal preview configuration confirmed; APK/native manifest NOT inspected.");
+          '
+      - name: Archive lockfile candidate and sanitized public Expo config
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fire-expo-preflight
+          path: |
+            mobile/fire/package-lock.json
+            mobile/fire/expo-config-public.json
+          retention-days: 7
+          if-no-files-found: warn
