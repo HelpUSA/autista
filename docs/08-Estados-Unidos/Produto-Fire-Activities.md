@@ -78,3 +78,7 @@ Para testar build nativo, o executor local precisa rodar `cd mobile/fire && npm 
 - [ ] Autorização explícita do Master antes da submissão.
 
 Relacionamentos: [[08-Estados-Unidos/Plano-Amazon-Appstore]], [[08-Estados-Unidos/Gates-de-Lancamento-US]], [[06-Operacao/Handoff-Antigravity]].
+
+## Auditoria estática do APK (nova etapa P0)
+
+Foi incluído `mobile/fire/apkManifestGate.mjs` com teste por evidências de `aapt dump badging`, `aapt dump permissions` e `aapt dump xmltree`. As permissões de rede, mídia e identificação são proibidas na edição offline, a identificação da aplicação deve conferir e os modos `debuggable`/`testOnly` são bloqueados. O comando `npm run inspect:apk` retorna SHA-256 do APK fornecido. É apenas análise estática de evidências fornecidas pelo executor; não inspeciona por si só tráfego, assinatura, conteúdo de SDK, privacidade ou regras da Amazon.
