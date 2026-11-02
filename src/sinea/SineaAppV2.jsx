@@ -107,7 +107,7 @@ function StudentDetail({t,student,onBack,onGo,role,l}){
   {tab==='plans'&&<PlanPage t={t} student={student}/>}
   {tab==='routine'&&<RoutinePage t={t}/>}
   {tab==='dailyTitle'&&<DiaryPage t={t} role={role}/>}
-  {tab==='schoolHistory'&&<section className={cn(card,'p-5')}><h2 className="font-bold">{t('schoolHistory')}</h2><ol className="mt-4 border-l-2 border-teal-300 pl-5">{timeline.map(x=><li key={x.id} className="mb-4"><strong>{x.year}</strong><p className="text-sm text-slate-700">{x.title}</p></li>)}</ol></section>}
+  {tab==='schoolHistory'&&<section className={cn(card,'p-5')}><h2 className="font-bold">{t('schoolHistory')}</h2><ol className="mt-4 border-l-2 border-teal-300 pl-5">{timeline.map(x=><li key={x.id} className="mb-4"><strong>{x.year}</strong><p className="text-sm text-slate-700">{l(x.title)}</p></li>)}</ol></section>}
   <div className="mt-5 flex flex-wrap gap-2"><button onClick={()=>onGo('family')} className={softBtn}><MessageCircle size={17}/>{t('family')}</button><button onClick={()=>onGo('activities')} className={softBtn}><BookOpen size={17}/>{t('activities')}</button></div>
  </>;
 }
@@ -217,9 +217,9 @@ export default function SineaApp(){
  const student=students.find(s=>s.id===studentId)??students[0];
  useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');},[language]);
  function changeRole(next){setRole(next);setScreen(next==='secretaria'?'dashboard':'home');setMenu(false);}
- function go(next){if(role==='secretaria' && next!=='dashboard')next='dashboard'; if(role==='familia'&&next==='record')next='family';setScreen(next);setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
+ function go(next){if(role==='secretaria' && next!=='dashboard')next='dashboard'; if(role==='familia'&&['record','dashboard','support'].includes(next))next='family';setScreen(next);setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
  function openStudent(id){if(role==='secretaria')return; if(role==='familia'&&id!==students[0].id)return;setStudentId(id);go('studentDetail');}
- const mainNav=navItems.filter(([key])=>role!=='secretaria'||key==='dashboard').filter(([key])=>role!=='familia'||key!=='record');
+ const mainNav=navItems.filter(([key])=>role!=='secretaria'||key==='dashboard').filter(([key])=>role!=='familia'||!['record','dashboard'].includes(key));
  const extraNav=[['family',MessageCircle],['routine',CalendarDays],['activities',BookOpen],['calm',HeartHandshake],['support',Settings2]];
  return <div className="min-h-screen bg-[#f3f7fa] text-slate-800">
   <header className="sticky top-0 z-30 bg-[#10304b] text-white shadow-sm">
@@ -233,7 +233,7 @@ export default function SineaApp(){
   <div className="mx-auto grid max-w-7xl gap-6 px-3 py-5 sm:px-6 lg:grid-cols-[228px_minmax(0,1fr)]">
    <aside className="hidden lg:block"><div className={cn(card,'sticky top-28 p-3')}>
     <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">{t('app')} · {t('role')}</p>
-    <nav aria-label={t('overview')} className="space-y-1">{[...mainNav.map(([key,Icon])=>[key,Icon]),...extraNav].filter(([key])=>role!=='secretaria'||key==='dashboard').map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} aria-current={screen===key?'page':undefined}
+    <nav aria-label={t('overview')} className="space-y-1">{[...mainNav.map(([key,Icon])=>[key,Icon]),...extraNav].filter(([key])=>(role!=='secretaria'||key==='dashboard')&&(role!=='familia'||key!=='support')).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} aria-current={screen===key?'page':undefined}
      className={cn('flex w-full items-center gap-3 rounded-xl p-3 text-left text-sm font-semibold',screen===key?'bg-teal-700 text-white':'text-slate-700 hover:bg-slate-100')}><Icon size={18}/>{t(key==='record'?'record':key)}</button>)}</nav>
     <div className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500">{t('helpus')}</div>
    </div></aside>
@@ -257,13 +257,13 @@ export default function SineaApp(){
   <footer className="hidden border-t border-slate-200 bg-white px-5 py-6 text-center text-xs text-slate-600 lg:block">{t('copyright')} · {t('privacy')} · {t('accessibility')}</footer>
   <nav aria-label={t('overview')} className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-1 pb-[env(safe-area-inset-bottom)] shadow-lg backdrop-blur lg:hidden">
    <div className="mx-auto grid max-w-2xl grid-cols-5">{navItems.map(([key,Icon])=>{
-    const disabled=(role==='secretaria'&&key!=='dashboard')||(role==='familia'&&key==='record');
+    const disabled=(role==='secretaria'&&key!=='dashboard')||(role==='familia'&&['record','dashboard'].includes(key));
     return <button type="button" key={key} disabled={disabled} aria-current={screen===key?'page':undefined} onClick={()=>go(key)}
       className={cn('min-h-[74px] flex flex-col items-center justify-center gap-1 px-1 text-[10px] font-semibold sm:text-xs focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-500',disabled?'opacity-30':'',screen===key?'text-teal-800':'text-slate-600')}>
      <span className={cn('grid place-items-center',key==='record'?'h-11 w-11 rounded-full bg-teal-700 text-white':'h-8 w-8')}><Icon size={key==='record'?23:21}/></span>{t(key)}
     </button>;})}</div>
    <div className="flex justify-center border-t border-slate-100 py-1"><button type="button" className="min-h-8 text-xs font-bold text-teal-800" onClick={()=>setMenu(v=>!v)} aria-expanded={menu} aria-controls="sinea-more">{menu?'−':'＋'} {t('family')} · {t('activities')} · {t('calm')}</button></div>
-   {menu&&<div id="sinea-more" className="grid grid-cols-2 gap-2 p-3">{extraNav.filter(([key])=>role!=='secretaria'||key==='dashboard').map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} className={cn(softBtn,'min-w-0')}><Icon size={16}/>{t(key)}</button>)}</div>}
+   {menu&&<div id="sinea-more" className="grid grid-cols-2 gap-2 p-3">{extraNav.filter(([key])=>(role!=='secretaria'||key==='dashboard')&&(role!=='familia'||key!=='support')).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} className={cn(softBtn,'min-w-0')}><Icon size={16}/>{t(key)}</button>)}</div>}
   </nav>
  </div>;
 }
