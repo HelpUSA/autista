@@ -69,3 +69,10 @@ Relacionamentos: [[08-Estados-Unidos/Produto-Fire-Activities]], [[08-Estados-Uni
 ## CI adicional — Expo/Metro antes do APK
 
 A PR #20 inclui `.github/workflows/fire-native-preflight.yml`, acionado por mudanças em `mobile/fire/`. Ele resolve dependências Expo, roda `npm test`, `expo-doctor`, e gera **somente** um bundle JS Android por `expo export`, além de arquivar um candidato `package-lock.json` e a configuração Expo pública. Esse passo valida a compilação de JavaScript mobile em runner Linux, sem criar ou assinar APK e sem atestar o Manifest mesclado. Se falhar, não liberar publicação; corrigir os problemas de SDK e reexecutar. O lockfile candidato precisa ser revisado e commitado antes de builds reproduzíveis.
+
+## Gate adicional — Inspeção de APK a partir de evidência real
+
+- [x] Parser de `aapt dump badging/permissions/xmltree` disponível em `mobile/fire/apkManifestGate.mjs` com testes negativos para permissões sensíveis, pacote inválido, SDK, debug e testOnly.
+- [ ] **Após build físico:** executar `npm run inspect:apk -- --apk sinea.apk --badging badging.txt --permissions permissions.txt --xmltree xmltree.txt` no diretório `mobile/fire` e anexar relatório saneado à issue #17.
+- [ ] Anexar hash SHA-256, verificação `apksigner`, evidências de tráfego observado (inclusive rede desativada), dispositivos/Fire OS e log de instalação.
+- [ ] **Não confundir** um parser aprovado com certificação COPPA ou garantia de ausência de coleta: bibliotecas e rede precisam de auditoria independente.

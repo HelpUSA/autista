@@ -43,3 +43,15 @@ Não usar login/registro escolar, telemetria, SDK de terceiros não auditado, da
 
 ## Pré-validação de ambiente no GitHub Actions
 A workflow `fire-native-preflight.yml` tenta instalar as dependências, executar o Expo Doctor e exportar o bundle JavaScript para Android. **Esse export não é APK, não testa Fire OS e não demonstra ausência de rede no binário.** Guardar os artefatos com lockfile candidato e `expo-config-public.json`; exigir inspeção de APK real pelo Antigravity antes de distribuição.
+
+## Inspeção estática obrigatória do APK assinado
+Após gerar o APK de teste, extrair dados com as ferramentas do Android SDK, **sem incluir arquivos com PII**:
+
+```bash
+aapt dump badging sinea.apk > badging.txt
+aapt dump permissions sinea.apk > permissions.txt
+aapt dump xmltree sinea.apk AndroidManifest.xml > xmltree.txt
+npm run inspect:apk -- --apk sinea.apk --badging badging.txt --permissions permissions.txt --xmltree xmltree.txt
+```
+
+O script `apkManifestGate.mjs` compara o pacote, níveis SDK, permissões sensíveis, modo debuggable/testOnly e tráfego HTTP aberto com o artefato real. Emite SHA-256 de evidência e falha em caso de inconsistência. `--release` rejeita explicitamente identificadores `.preview` e requer flags formais, mas **não submete o aplicativo**. A verificação não testa assinatura criptográfica, tráfego efetivo, SDKs nativos, regras COPPA ou aprovação da Amazon. Para evidência de assinatura executar separadamente `apksigner verify --verbose --print-certs sinea.apk`, sem publicar certificados privados.
