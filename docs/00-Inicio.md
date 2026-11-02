@@ -43,7 +43,7 @@ tags:
 [[ARCHITECTURE-AND-SAFETY]] · [[SINEA-ALIGNMENT-PUBLIC]] · [[SECURE-DEPLOYMENT-GATES]] · [[ANTIGRAVITY-HANDOFF]] · [[ANTIGRAVITY-HANDOFF-P1]]
 
 ## Convenções do cofre
-- Wikilinks `[[Pasta/Arquivo]]`; Markdown padrão, frontmatter YAML, tarefas `- [ ]`.
+- Wikilinks links no formato wiki do Obsidian; Markdown padrão, frontmatter YAML, tarefas `- [ ]`.
 - Mermaid para arquitetura, sequência e jornadas; Obsidian renderiza nativamente.
 - Revisões de decisões em [[07-Governanca/ADRs]] e controle de alterações por Git.
 - Estados rigorosos: **implementado**, **demonstrativo**, **em desenvolvimento**, **bloqueado**. Nunca confundir prova unitária com homologação operacional.
