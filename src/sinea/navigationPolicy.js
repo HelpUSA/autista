@@ -15,7 +15,7 @@ export const DEMO_ROLES=Object.freeze({
  familia:['home','students','studentDetail','plans','family','routine','activities','calm']
 });
 export function canOpenDemoScreen(role,screen){
- return Boolean(DEMO_ROLES[role]?.includes(screen));
+ return Object.hasOwn(DEMO_ROLES,role) && DEMO_ROLES[role].includes(screen);
 }
 export function landingDemoScreen(role){
  return role==='secretaria'?'dashboard':canOpenDemoScreen(role,'home')?'home':null;
