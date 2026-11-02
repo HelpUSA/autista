@@ -16,7 +16,8 @@ tags: [sinea, us, gate, amazon, security, privacy]
 |---|---|---|
 | Web responsiva PT/EN/ES | `src/sinea/SineaAppV2.jsx`, `i18n.js` | DEMO |
 | Expo mobile trilíngue | `mobile/App.jsx`, `mobile/src/i18n.js` | DEMO |
-| Atividades e rotina visual | `mobile/App.jsx` e `src/activities/` | DEMO; expandir conteúdo e testes |
+| Atividades e rotina visual | `mobile/App.jsx` e `src/activities/` | DEMO |
+| Fire Tablet independente | `mobile/fire/` (30 atividades/5 temas, CAA, rotina em EN/PT/ES) | **Teste interno; sem APK assinado ou publicação** |
 | Backend OIDC/RLS | `server/`, `database/migrations/` | NÃO implantado para uso real; escrita bloqueada |
 | Offline mobile | `mobile/src/offlineEngine.mjs` | Contrato de fila; criptografia nativa não implementada |
 | Lojas / Amazon | Sem submissão confirmada | PENDENTE |
@@ -26,9 +27,11 @@ tags: [sinea, us, gate, amazon, security, privacy]
 - [ ] Product scope aprovado: apenas conteúdos e atividades, sem prontuário, sem login infantil, sem fotos, sem chat, sem coleta de dados pessoais.
 - [ ] Revisão COPPA/Amazon Child-Directed App Policy e privacidade com advogado competente.
 - [ ] Confirmação técnica de zero coleta/transmissão de informações e de SDKs/telemetria.
-- [ ] EN-US padrão para EUA, PT-BR, ES-ES completos: textos, atividades, voz, loja, suporte, política.
+- [x] EN-US padrão em app Fire isolado, PT-BR e ES-ES para os textos atualmente presentes; testes automatizados de paridade. **Voz, revisão editorial, loja, suporte e política completos seguem pendentes**.
 - [ ] Conteúdo editorial original/licenciado, sem material confidencial no GitHub público.
-- [ ] App com funcionalidade além de demo/website, testado em Fire físico.
+- [x] Edição de teste separada em código, com 30 atividades, cartões CAA e rotina visual, sem API/login incorporados.
+- [ ] Teste de APK real em Fire físico, incluindo garantia de que SDK não faz tráfego de rede.
+- [x] Perfis de build interno e package ID de **preview** definidos em `mobile/fire/app.json`/`eas.json`.
 - [ ] Identificador final, assinatura segura, APK/AAB reproduzível, notas de versão e atualização.
 - [ ] Conta Amazon Developer HelpUS LLC, metadados e classificação infantil corretos.
 - [ ] Capturas genuínas em três idiomas, termos e política pública, contatos de suporte.

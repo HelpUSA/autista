@@ -18,6 +18,8 @@ jobs:
       - run: npm test
       - run: npm run test:docs
       - run: npm run test:mobile-domain
+      - name: Test standalone Amazon Fire offline edition
+        run: npm run test:fire
       - run: npm run build
   api:
     runs-on: ubuntu-latest

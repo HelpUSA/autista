@@ -38,6 +38,7 @@ tags:
 | GitHub vs alias Vercel e promoção | [[06-Operacao/Estado-Git-e-Deploy]] |
 | Planejamento e decisões | [[07-Governanca/Roadmap-e-Pendencias]] · [[07-Governanca/ADRs]] |
 | Mercado inicial EUA / Amazon | [[08-Estados-Unidos/Plano-Amazon-Appstore]] · [[08-Estados-Unidos/Gates-de-Lancamento-US]] · [[08-Estados-Unidos/Distribuicao-e-Monetizacao]] |
+| Edição Fire independente | [[08-Estados-Unidos/Produto-Fire-Activities]] |
 | Handoff para Antigravity | [[06-Operacao/Handoff-Antigravity]] |
 
 ## Documentos de legado preservados
