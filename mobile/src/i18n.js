@@ -2,6 +2,7 @@ export const LANGUAGES=Object.freeze([{id:'pt-BR',label:'Português',short:'PT'}
 export const DEFAULT_LANGUAGE='pt-BR';
 const translations={
 'pt-BR':{
+skipContent:'Pular para o conteúdo',
 app:'SINEA',subtitle:'Educação inclusiva • Editora Evoluce',tagline:'Cada aluno, uma história. Cada evolução, um dado que transforma.',
 helpus:'Tecnologia HelpUS',demo:'Ambiente demonstrativo com estudantes fictícios. Não informe dados reais, documentos ou laudos.',
 role:'Perfil demonstrativo',aee:'Professor AEE',mediador:'Mediador',coordenacao:'Coordenação',secretaria:'Secretaria',familia:'Família',
@@ -20,6 +21,7 @@ sampleActivity:'Leitura com cartões de apoio visual',sampleSummary:'Hoje houve 
 routineWelcome:'Boas-vindas',routineReading:'Leitura apoiada',routineSnack:'Lanche',routineMath:'Matemática com material concreto',routineBreak:'Pausa combinada',routineFarewell:'Encerramento',evoluce:'Editora Evoluce'
 },
 'en-US':{
+skipContent:'Skip to content',
 app:'SINEA',subtitle:'Inclusive education • Evoluce Publisher',tagline:'Every student, a story. Every step forward, data that makes a difference.',
 helpus:'HelpUS technology',demo:'Demonstration with fictional students. Do not enter real personal information, documents, or medical reports.',
 role:'Demo profile',aee:'Special Education Teacher',mediador:'Learning Assistant',coordenacao:'School Coordinator',secretaria:'Education Department',familia:'Family',
@@ -38,6 +40,7 @@ sampleActivity:'Reading with picture cards',sampleSummary:'Today the student joi
 routineWelcome:'Welcome',routineReading:'Supported reading',routineSnack:'Snack',routineMath:'Hands-on math',routineBreak:'Planned break',routineFarewell:'Wrap up',evoluce:'Evoluce Publisher'
 },
 'es-ES':{
+skipContent:'Saltar al contenido',
 app:'SINEA',subtitle:'Educación inclusiva • Editorial Evoluce',tagline:'Cada estudiante, una historia. Cada avance, un dato que transforma.',
 helpus:'Tecnología HelpUS',demo:'Demostración con estudiantes ficticios. No introduzca datos reales, documentos ni informes médicos.',
 role:'Perfil de demostración',aee:'Docente de apoyo especializado',mediador:'Mediador',coordenacao:'Coordinación',secretaria:'Secretaría de Educación',familia:'Familia',

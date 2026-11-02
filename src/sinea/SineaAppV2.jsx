@@ -4,6 +4,8 @@ import {students,agenda,pending,planGoals,timeline,networkMetrics,networkNeeds,c
 import {canPreview} from './demoPolicy.js';
 import {LANGUAGES,DEFAULT_LANGUAGE,normalizeLocale,translate} from './i18n.js';
 import {localizeDemo} from './demoLocale.js';
+import {demoHomeMetrics,displayDemoNumber,visibleDemoAppointments,visibleDemoTasks} from './demoMetrics.js';
+import {readLocalePreference,writeLocalePreference} from './localePreference.js';
 import {canOpenDemoScreen,landingDemoScreen,resolveDemoScreen,visibleDemoNavigation,studentVisibleToDemoRole} from './navigationPolicy.js';
 
 const BRAND_LOGO='/brand/helpus-logo.jpg';
@@ -53,8 +55,10 @@ function StudentTile({s,t,onOpen,l}){return <button type="button" onClick={()=>o
  <p className="text-xs mt-2 text-slate-600">{t('goalProgress')} · {s.goalPercent}%</p>
  </button>;
 }
-function HomePage({t,role,onStudent,onGo,l}){
- const family=role==='familia';
+function HomePage({t,role,onStudent,onGo,l,language}){
+ const metrics=demoHomeMetrics(role,students,agenda,pending);
+ const appointments=visibleDemoAppointments(role,agenda,students);
+ const tasks=visibleDemoTasks(role,pending,students);
  return <>
   <div className="rounded-2xl bg-gradient-to-r from-[#10304b] to-[#116a79] p-5 text-white sm:p-8">
    <p className="text-xs font-semibold uppercase tracking-widest text-teal-200">{t('demoInstitution')}</p>
@@ -62,19 +66,19 @@ function HomePage({t,role,onStudent,onGo,l}){
    <p className="mt-2 max-w-2xl text-sm text-teal-50">{t('tagline')}</p>
   </div>
   <div className="my-5 grid grid-cols-2 gap-3 lg:grid-cols-3">
-   <Metric title={t('countStudents')} value={family?'1':'14'}/>
-   <Metric title={t('countAppointments')} value="5"/>
-   <Metric title={t('countPlans')} value="2"/>
+   <Metric title={t('countStudents')} value={displayDemoNumber(language,metrics.students)}/>
+   <Metric title={t('countAppointments')} value={displayDemoNumber(language,metrics.appointments)}/>
+   <Metric title={t('countPlans')} value={displayDemoNumber(language,metrics.planReviews)}/>
   </div>
   <div className="grid gap-5 lg:grid-cols-5">
    <section className="lg:col-span-3"><PanelTitle title={t('today')} eyebrow={t('calendar')}/>
     <div className={cn(card,'divide-y divide-slate-100')}>
-     {agenda.filter(row=>role!=='familia'||row.studentId===students[0].id).map(row=>{const s=students.find(st=>st.id===row.studentId);return <button type="button" key={row.id} onClick={()=>onStudent(s.id)} className="flex w-full items-center gap-3 px-4 py-4 text-left hover:bg-teal-50">
+     {appointments.map(row=>{const s=students.find(st=>st.id===row.studentId);return <button type="button" key={row.id} onClick={()=>onStudent(s.id)} className="flex w-full items-center gap-3 px-4 py-4 text-left hover:bg-teal-50">
        <span className="shrink-0 text-sm font-bold text-teal-800">{row.time}</span><span className="flex-1"><strong className="block text-sm text-[#10304b]">{s.name}</strong><span className="text-xs text-slate-600">{l(row.location)}</span></span><ChevronRight size={16}/></button>;})}
     </div>
    </section>
    <section className="lg:col-span-2"><PanelTitle title={t('pending')} eyebrow={t('notifications')}/>
-    <div className={cn(card,'divide-y divide-slate-100')}>{pending.filter(p=>role!=='familia'||p.studentId===students[0].id).map(p=><div key={p.id} className="px-4 py-3"><p className="text-xs font-bold text-amber-800">{l(p.deadline)}</p><p className="text-sm font-semibold text-[#10304b]">{t('review')} · {l(p.detail)}</p></div>)}</div>
+    <div className={cn(card,'divide-y divide-slate-100')}>{tasks.map(p=><div key={p.id} className="px-4 py-3"><p className="text-xs font-bold text-amber-800">{l(p.deadline)}</p><p className="text-sm font-semibold text-[#10304b]">{t('review')} · {l(p.detail)}</p></div>)}</div>
     <button className={cn(softBtn,'mt-3 w-full')} onClick={()=>onGo('family')}><MessageCircle size={17}/>{t('family')}<ChevronRight size={16}/></button>
    </section>
   </div>
@@ -208,7 +212,7 @@ function SupportPage({t}){
  </>;
 }
 export default function SineaApp(){
- const [language,setLanguage]=useState(DEFAULT_LANGUAGE);
+ const [language,setLanguage]=useState(()=>readLocalePreference(typeof window==='undefined'?null:window.localStorage));
  const t=key=>translate(language,key);
  const l=value=>localizeDemo(language,value);
  const [role,setRole]=useState('aee');
@@ -216,13 +220,14 @@ export default function SineaApp(){
  const [studentId,setStudentId]=useState(students[0].id);
  const [menu,setMenu]=useState(false);
  const student=students.find(s=>s.id===studentId)??students[0];
- useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');},[language]);
+ useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');writeLocalePreference(window.localStorage,language);},[language]);
  function changeRole(next){setRole(next);setScreen(landingDemoScreen(next));setStudentId(students[0].id);setMenu(false);}
  function go(next){setScreen(resolveDemoScreen(role,next));setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
  function openStudent(id){if(!studentVisibleToDemoRole(role,id,students.map(s=>s.id)))return;setStudentId(id);go('studentDetail');}
  const mainNav=visibleDemoNavigation(role,navItems);
  const extraNav=[['family',MessageCircle],['routine',CalendarDays],['activities',BookOpen],['calm',HeartHandshake],['support',Settings2]];
  return <div className="min-h-screen bg-[#f3f7fa] text-slate-800">
+  <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-3 focus:text-[#10304b] focus:shadow-lg">{t('skipContent')}</a>
   <header className="sticky top-0 z-30 bg-[#10304b] text-white shadow-sm">
    <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
     <button type="button" className="rounded-xl text-left focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-200" onClick={()=>go('home')} aria-label="SINEA"><Brand t={t} light/></button>
@@ -238,10 +243,10 @@ export default function SineaApp(){
      className={cn('flex w-full items-center gap-3 rounded-xl p-3 text-left text-sm font-semibold',screen===key?'bg-teal-700 text-white':'text-slate-700 hover:bg-slate-100')}><Icon size={18}/>{t(key==='record'?'record':key)}</button>)}</nav>
     <div className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500">{t('helpus')}</div>
    </div></aside>
-   <main id="main-content" className="min-w-0 pb-28 lg:pb-10">
+   <main id="main-content" tabIndex={-1} className="min-w-0 pb-28 lg:pb-10">
     <Note t={t}/>
     <div className="mt-5">
-     {canOpenDemoScreen(role,screen)&&screen==='home'&&<HomePage t={t} l={l} role={role} onStudent={openStudent} onGo={go}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='home'&&<HomePage t={t} l={l} language={language} role={role} onStudent={openStudent} onGo={go}/>}
      {canOpenDemoScreen(role,screen)&&screen==='students'&&<StudentsPage t={t} l={l} role={role} onStudent={openStudent}/>}
      {canOpenDemoScreen(role,screen)&&screen==='studentDetail'&&<StudentDetail t={t} l={l} student={student} role={role} onBack={()=>go('students')} onGo={go}/>}
      {canOpenDemoScreen(role,screen)&&screen==='record'&&<DiaryPage t={t} role={role}/>}
