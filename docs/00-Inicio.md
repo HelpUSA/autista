@@ -35,6 +35,7 @@ tags:
 | Dados e integrações | [[03-Arquitetura/Visao-Tecnica]] · [[03-Arquitetura/Modelo-de-Dados]] · [[03-Arquitetura/API-e-Contratos]] |
 | Segurança e privacidade infantil | [[05-Seguranca/Privacidade-e-LGPD]] · [[05-Seguranca/Threat-Model]] |
 | Build, CI e Vercel | [[06-Operacao/Ambientes-e-Deploy]] · [[06-Operacao/Testes-e-Homologacao]] |
+| GitHub vs alias Vercel e promoção | [[06-Operacao/Estado-Git-e-Deploy]] |
 | Planejamento e decisões | [[07-Governanca/Roadmap-e-Pendencias]] · [[07-Governanca/ADRs]] |
 | Handoff para Antigravity | [[06-Operacao/Handoff-Antigravity]] |
 

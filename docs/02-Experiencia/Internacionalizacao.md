@@ -43,3 +43,7 @@ Usar `Intl.DateTimeFormat(locale)`, `Intl.NumberFormat(locale)`, e futura tradu�
 - [ ] Troca de idioma não perde o contexto da tela nem grava dados pessoais.
 - [ ] E-mails, app Android/iOS, relatórios, PDFs e notificações nos três idiomas.
 - [ ] Testes E2E em todos os idiomas e na região do Paraguai.
+
+## Preferência de idioma e leitura por teclado
+
+A web agora registra somente o código regional selecionado em `sinea.demo.language.v1` no armazenamento do navegador, usando `src/sinea/localePreference.js`; perfis, identidades e registros **não são persistidos**. O código falha com segurança quando o armazenamento está indisponível. O cabeçalho mantém o seletor visível, e existe link acessível `Pular para o conteúdo / Skip to content / Saltar al contenido`. A métrica numérica demonstrativa usa `Intl.NumberFormat` por locale. Testes: `localePreference.test.js` e `demoMetrics.test.js`.

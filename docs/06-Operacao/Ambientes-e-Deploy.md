@@ -48,3 +48,7 @@ Não colocar tokens no chat nem no Git; Vercel/Cloudflare Secrets apenas em loca
 Métricas de latência, erros e disponibilidade sem dados pessoais; nenhum conteúdo de prontuário em logs. Testar volume por escolas e 50 mil estudantes antes de reivindicar escala.
 
 Links: [[06-Operacao/Testes-e-Homologacao]], [[07-Governanca/Roadmap-e-Pendencias]].
+
+## Situação de alias comunicada pelo Antigravity
+
+O executor reportou em 01/11/2026 a correção dos aliases `autista.helpusbr.com` e `autista-umber.vercel.app` para o deployment `dpl_C7wjFSyoqNteZuhVTjE3DWVHQAJC`. O GitHub continua com PRs de trabalho abertas e `main` independente do alias. Sempre cruzar SHA de deployment com SHA do repositório conforme [[06-Operacao/Estado-Git-e-Deploy]].
