@@ -25,7 +25,7 @@ tags:
 - [ ] Comparar cores, hierarquia, logo e 5 botões inferiores ao PDF.
 - [ ] Validar a imagem HelpUS local em `public/brand/helpus-logo.jpg` e `mobile/assets/helpus-logo.jpg`, copiada byte a byte do repositório oficial HelpUSA/helpus-ai, SHA Git `5fd4cb3ab76399f6d6200f9a897bea95124cf0c3`; registrar SHA-256 e autorização de marca antes de deploy.
 - [ ] Revisar tradução de rótulos da demo, mobile Expo, templates de email, notificações e PDF.
-- [ ] Conferir docs Obsidian com backlinks em `docs/00-Inicio.md` e Mermaid.
+- [ ] Validar migração 004 (comunicação família) e testes de vínculo e recibos, mantendo RLS deny-all e sem grants; conferir docs Obsidian com backlinks em `docs/00-Inicio.md` e Mermaid.
 - [ ] Não migrar dados reais, nem permitir envio de mensagens ou registros sem auth e base legal.
 - [ ] Reportar ACK, screenshots e logs saneados, erros, correções e status DNS/SSL.
 - [ ] Manter PR #15 em draft até revisão; PR #12 é sua dependência.

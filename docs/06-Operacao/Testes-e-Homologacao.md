@@ -17,7 +17,7 @@ tags:
 - `npm ci && npm test && npm run build`
 - `npm run test:mobile-domain` (outbox pura)
 - `cd server && npm ci && npm test` após lockfile do Antigravity
-- PostgreSQL 16: migrations 001, 002 e 003 e SQL tests RLS, cross-tenant e schema extendido.
+- PostgreSQL 16: migrations 001, 002, 003 e 004 e SQL tests RLS, cross-tenant e schema extendido.
 - i18n: mesmas chaves em PT/EN/ES, fallback, textos de segurança em cada idioma.
 - Audit de dependências: runtime deve estar sem advisories alta/crítica.
 

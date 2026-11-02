@@ -38,6 +38,9 @@ Essas referências não autorizam reprodução de código, imagens, textos ou ma
 - Canais possuem horário de resposta institucional e escalonamento, não são emergência clínica.
 - Idempotência na entrega; evitar notificações duplicadas.
 
+## Contratos e banco preparados
+`src/domain/familyCommunication.js` implementa regras puras de criação, segunda aprovação, publicação e recibo idempotente mediante vínculo familiar verificado, com testes. `database/migrations/004_family_communications.sql` define tabelas e relacionamentos; **nenhuma permissão de acesso foi aberta**. A integração entre essas regras e as telas, com token real e sessão, continua bloqueada.
+
 ## Implementado na DEMO
 `FamilyPage` mostra abas Comunicados, Canais, Calendário e Autorizações. Confirmar leitura altera apenas memória da sessão; não envia mensagem nem persiste.
 

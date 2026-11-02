@@ -32,7 +32,7 @@ flowchart TB
 - `src/main.jsx` inicializa `src/sinea/SineaAppV2.jsx`.
 - `src/sinea/i18n.js` concentra traduções.
 - `src/domain/*.js`: regras puras de PEI, Canto, transferências, licenciamento, IA e métricas.
-- `database/migrations/001..003`: PostgreSQL com RLS forçada; migração 002 concede leituras limitadas à role sem LOGIN `sinea_api`.
+- `database/migrations/001..004`: PostgreSQL com RLS forçada; migração 002 concede leituras limitadas à role sem LOGIN `sinea_api`.
 - `server/`: API experimental com JWT OIDC/JWKS e MFA; escrita desabilitada.
 - `mobile/`: Expo DEMO e motor offline sem criptografia nativa.
 

@@ -35,6 +35,7 @@ erDiagram
 | `database/migrations/001_sinea_core.sql` | tenant, escolas, profissionais, estudantes, planos, documentos, atendimentos, Canto, transferências, licenças e auditoria | Testado em CI |
 | `002_scoped_read_rls.sql` | políticas SELECT por vínculo com role `sinea_api` não-login | Testado em CI |
 | `003_extended_domain.sql` | turmas, matrículas, estudo de caso, editora, BNCC, outbox, IA, retenção e solicitações de titulares | Estrutura fechada, testada |
+| `004_family_communications.sql` | canais, comunicados, mensagens, vínculo familiar, recibos, diário compartilhável e autorizações | RLS forçada, sem GRANT de aplicação, pendente de homologação |
 
 ## Constraints
 Chave UUID, `tenant_id` nas entidades escolares, referência composta `tenant_id/id`, `client_mutation_id` único, `version` em planos e registros, eventos de auditoria append-only; não permitir sobrescrita silenciosa.

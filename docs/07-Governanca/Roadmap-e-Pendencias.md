@@ -19,8 +19,11 @@ tags:
 - [x] Agenda visual, atividades acessíveis.
 - [x] **Nova interface** responsiva PT/EN/ES e comunicação familiar ilustrativa.
 - [x] Cofre Obsidian no repositório.
+- [x] Logo HelpUS incorporada localmente (pendente aceite de uso e homologação visual).
+- [x] Prototipagem PT/EN/ES também em mobile Expo, sem homologação em dispositivos reais.
+- [x] Contratos e SQL da comunicação família com isolamento fechado, sem API operacional.
 - [ ] Homologação UX com Evoluce, incluindo acessibilidade.
-- [ ] Cópia local e autorização da logo HelpUS.
+- [ ] Aprovação formal de uso de marca HelpUS no projeto Evoluce.
 
 ## Fase P1 — MVP escolar com segurança
 - [ ] IdP OIDC real, MFA e recuperação de acesso.
