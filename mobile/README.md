@@ -41,3 +41,6 @@ Antes de habilitar dados reais:
   cancelamento de conta, dispositivo perdido e remoção remota.
 - Fazer revisão de segurança móvel e pen test, armazenamento no Brasil e contratos LGPD.
 - Não usar esse protótipo Expo como aplicação de produção ou prova de compliance.
+
+## Internacionalização do protótipo Expo
+`mobile/App.jsx` possui seletor PT/EN/ES com o mesmo dicionário de `src/sinea/i18n.js`, mantido em `mobile/src/i18n.js` e verificado por teste de paridade `mobile/src/i18n.test.mjs`. Não foi homologado em aparelhos reais; traduzir serviços, notificações e acessibilidade nativa antes de produção.

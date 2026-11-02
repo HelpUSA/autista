@@ -25,7 +25,7 @@ tags:
 - Voz em atividades usa locale do usuário quando Web Speech API existe.
 
 > [!warning] Escopo / dívida técnica
-> A interface legada `SineaApp.jsx`, `ActivityStudio.jsx`, `VisualRoutine.jsx` e o protótipo `mobile/App.jsx` continuam com textos originalmente em português. A entrada web passou a usar `SineaAppV2.jsx`. Para cumprir a regra **em todas as superfícies**, migrar também mobile, e-mails, push, relatórios PDF, auditorias acessíveis, erros de API expostos e conteúdo editorial. Não alegar cobertura global antes de fazê-lo.
+> A interface legada `SineaApp.jsx`, `ActivityStudio.jsx` e `VisualRoutine.jsx` ainda contém textos portugueses, mas **não integra o ponto de entrada atual da aplicação web**. O protótipo `mobile/App.jsx` foi atualizado para PT/EN/ES com cópia do catálogo central e teste de paridade `mobile/src/i18n.test.mjs`. Homologação real de Android/iOS, tradução de mensagens de serviços, e-mails, push, PDF, erros de API e conteúdo editorial permanecem pendentes. Não alegar cobertura global até concluir esses gates.
 
 ## Novas chaves
 - Chave semântica em inglês técnico (ex.: `familySummary`).
