@@ -39,6 +39,7 @@ tags:
 | Planejamento e decisões | [[07-Governanca/Roadmap-e-Pendencias]] · [[07-Governanca/ADRs]] |
 | Mercado inicial EUA / Amazon | [[08-Estados-Unidos/Plano-Amazon-Appstore]] · [[08-Estados-Unidos/Gates-de-Lancamento-US]] · [[08-Estados-Unidos/Distribuicao-e-Monetizacao]] |
 | Edição Fire independente | [[08-Estados-Unidos/Produto-Fire-Activities]] |
+| Amazon — listagem, release e privacidade | [[08-Estados-Unidos/Listagem-Amazon-Trilingue]] · [[08-Estados-Unidos/Checklist-Release-Fire]] · [[08-Estados-Unidos/Privacidade-Fire-Rascunho]] |
 | Handoff para Antigravity | [[06-Operacao/Handoff-Antigravity]] |
 
 ## Documentos de legado preservados
