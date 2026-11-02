@@ -4,6 +4,7 @@ import {students,agenda,pending,planGoals,timeline,networkMetrics,networkNeeds,c
 import {canPreview} from './demoPolicy.js';
 import {LANGUAGES,DEFAULT_LANGUAGE,normalizeLocale,translate} from './i18n.js';
 import {localizeDemo} from './demoLocale.js';
+import {canOpenDemoScreen,landingDemoScreen,resolveDemoScreen,visibleDemoNavigation,studentVisibleToDemoRole} from './navigationPolicy.js';
 
 const BRAND_LOGO='/brand/helpus-logo.jpg';
 const cn=(...s)=>s.filter(Boolean).join(' ');
@@ -216,10 +217,10 @@ export default function SineaApp(){
  const [menu,setMenu]=useState(false);
  const student=students.find(s=>s.id===studentId)??students[0];
  useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');},[language]);
- function changeRole(next){setRole(next);setScreen(next==='secretaria'?'dashboard':'home');setMenu(false);}
- function go(next){if(role==='secretaria' && next!=='dashboard')next='dashboard'; if(role==='familia'&&['record','dashboard','support'].includes(next))next='family';setScreen(next);setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
- function openStudent(id){if(role==='secretaria')return; if(role==='familia'&&id!==students[0].id)return;setStudentId(id);go('studentDetail');}
- const mainNav=navItems.filter(([key])=>role!=='secretaria'||key==='dashboard').filter(([key])=>role!=='familia'||!['record','dashboard'].includes(key));
+ function changeRole(next){setRole(next);setScreen(landingDemoScreen(next));setStudentId(students[0].id);setMenu(false);}
+ function go(next){setScreen(resolveDemoScreen(role,next));setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
+ function openStudent(id){if(!studentVisibleToDemoRole(role,id,students.map(s=>s.id)))return;setStudentId(id);go('studentDetail');}
+ const mainNav=visibleDemoNavigation(role,navItems);
  const extraNav=[['family',MessageCircle],['routine',CalendarDays],['activities',BookOpen],['calm',HeartHandshake],['support',Settings2]];
  return <div className="min-h-screen bg-[#f3f7fa] text-slate-800">
   <header className="sticky top-0 z-30 bg-[#10304b] text-white shadow-sm">
@@ -233,37 +234,37 @@ export default function SineaApp(){
   <div className="mx-auto grid max-w-7xl gap-6 px-3 py-5 sm:px-6 lg:grid-cols-[228px_minmax(0,1fr)]">
    <aside className="hidden lg:block"><div className={cn(card,'sticky top-28 p-3')}>
     <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">{t('app')} · {t('role')}</p>
-    <nav aria-label={t('overview')} className="space-y-1">{[...mainNav.map(([key,Icon])=>[key,Icon]),...extraNav].filter(([key])=>(role!=='secretaria'||key==='dashboard')&&(role!=='familia'||key!=='support')).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} aria-current={screen===key?'page':undefined}
+    <nav aria-label={t('overview')} className="space-y-1">{visibleDemoNavigation(role,[...mainNav.map(([key,Icon])=>[key,Icon]),...extraNav]).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} aria-current={screen===key?'page':undefined}
      className={cn('flex w-full items-center gap-3 rounded-xl p-3 text-left text-sm font-semibold',screen===key?'bg-teal-700 text-white':'text-slate-700 hover:bg-slate-100')}><Icon size={18}/>{t(key==='record'?'record':key)}</button>)}</nav>
     <div className="mt-5 border-t border-slate-100 pt-4 text-xs text-slate-500">{t('helpus')}</div>
    </div></aside>
    <main id="main-content" className="min-w-0 pb-28 lg:pb-10">
     <Note t={t}/>
     <div className="mt-5">
-     {screen==='home'&&<HomePage t={t} l={l} role={role} onStudent={openStudent} onGo={go}/>}
-     {screen==='students'&&<StudentsPage t={t} l={l} role={role} onStudent={openStudent}/>}
-     {screen==='studentDetail'&&<StudentDetail t={t} l={l} student={student} role={role} onBack={()=>go('students')} onGo={go}/>}
-     {screen==='record'&&<DiaryPage t={t} role={role}/>}
-     {screen==='plans'&&<PlanPage t={t}/>}
-     {screen==='dashboard'&&<NetworkPage t={t} l={l}/>}
-     {screen==='family'&&<FamilyPage t={t} role={role}/>}
-     {screen==='routine'&&<RoutinePage t={t}/>}
-     {screen==='activities'&&<ActivityPage t={t} language={language}/>}
-     {screen==='calm'&&<CalmPage t={t}/>}
-     {screen==='support'&&<SupportPage t={t}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='home'&&<HomePage t={t} l={l} role={role} onStudent={openStudent} onGo={go}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='students'&&<StudentsPage t={t} l={l} role={role} onStudent={openStudent}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='studentDetail'&&<StudentDetail t={t} l={l} student={student} role={role} onBack={()=>go('students')} onGo={go}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='record'&&<DiaryPage t={t} role={role}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='plans'&&<PlanPage t={t}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='dashboard'&&<NetworkPage t={t} l={l}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='family'&&<FamilyPage t={t} role={role}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='routine'&&<RoutinePage t={t}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='activities'&&<ActivityPage t={t} language={language}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='calm'&&<CalmPage t={t}/>}
+     {canOpenDemoScreen(role,screen)&&screen==='support'&&<SupportPage t={t}/>}
     </div>
    </main>
   </div>
   <footer className="hidden border-t border-slate-200 bg-white px-5 py-6 text-center text-xs text-slate-600 lg:block">{t('copyright')} · {t('privacy')} · {t('accessibility')}</footer>
   <nav aria-label={t('overview')} className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-1 pb-[env(safe-area-inset-bottom)] shadow-lg backdrop-blur lg:hidden">
    <div className="mx-auto grid max-w-2xl grid-cols-5">{navItems.map(([key,Icon])=>{
-    const disabled=(role==='secretaria'&&key!=='dashboard')||(role==='familia'&&['record','dashboard'].includes(key));
+    const disabled=!canOpenDemoScreen(role,key);
     return <button type="button" key={key} disabled={disabled} aria-current={screen===key?'page':undefined} onClick={()=>go(key)}
       className={cn('min-h-[74px] flex flex-col items-center justify-center gap-1 px-1 text-[10px] font-semibold sm:text-xs focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-500',disabled?'opacity-30':'',screen===key?'text-teal-800':'text-slate-600')}>
      <span className={cn('grid place-items-center',key==='record'?'h-11 w-11 rounded-full bg-teal-700 text-white':'h-8 w-8')}><Icon size={key==='record'?23:21}/></span>{t(key)}
     </button>;})}</div>
    <div className="flex justify-center border-t border-slate-100 py-1"><button type="button" className="min-h-8 text-xs font-bold text-teal-800" onClick={()=>setMenu(v=>!v)} aria-expanded={menu} aria-controls="sinea-more">{menu?'−':'＋'} {t('family')} · {t('activities')} · {t('calm')}</button></div>
-   {menu&&<div id="sinea-more" className="grid grid-cols-2 gap-2 p-3">{extraNav.filter(([key])=>(role!=='secretaria'||key==='dashboard')&&(role!=='familia'||key!=='support')).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} className={cn(softBtn,'min-w-0')}><Icon size={16}/>{t(key)}</button>)}</div>}
+   {menu&&<div id="sinea-more" className="grid grid-cols-2 gap-2 p-3">{visibleDemoNavigation(role,extraNav).map(([key,Icon])=><button type="button" key={key} onClick={()=>go(key)} className={cn(softBtn,'min-w-0')}><Icon size={16}/>{t(key)}</button>)}</div>}
   </nav>
  </div>;
 }
