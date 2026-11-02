@@ -37,3 +37,6 @@ Não usar login/registro escolar, telemetria, SDK de terceiros não auditado, da
 
 ## Verificações automatizadas
 `npm run test:fire` na raiz executa `mobile/fire/*.test.mjs` sem Expo. A CI testa as traduções, 30 cartões, comportamento local e bloqueios de permissões. Isso não substitui inspeção nativa nem hardware.
+
+## Estado transiente de atividades
+`lessonState.mjs` controla respostas, pausa, avanço, conclusão e reinício sem registrar dados pessoais. O sexto exercício termina em uma tela de conclusão, sem reinício automático. `lessonState.test.mjs` percorre os 5 temas nos três idiomas e rejeita transições inválidas.

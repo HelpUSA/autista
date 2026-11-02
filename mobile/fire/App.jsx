@@ -1,7 +1,8 @@
 import React,{useMemo,useState} from 'react';
 import {SafeAreaView,ScrollView,StatusBar,Text,View,Image,Pressable,StyleSheet} from 'react-native';
 import {FIRE_LOCALES,FIRE_DEFAULT_LOCALE,fireText,fireTopics,fireRoutine,
-  fireCommunicationCards,fireTasks,isFireAnswerCorrect} from './content.mjs';
+  fireCommunicationCards,fireTasks} from './content.mjs';
+import {createFireLesson,advanceFireLesson} from './lessonState.mjs';
 const logo=require('./assets/helpus-logo.jpg');
 const C={navy:'#10304b',teal:'#0f766e',light:'#e8f7f2',canvas:'#f3f7fa',white:'#ffffff',
   muted:'#475569',border:'#cbd5e1',amber:'#92400e'};
@@ -21,20 +22,17 @@ function Panel({children}){return <View style={s.panel}>{children}</View>;}
 export default function FireActivities(){
  const [locale,setLocale]=useState(FIRE_DEFAULT_LOCALE);
  const [page,setPage]=useState('home');
- const [topic,setTopic]=useState('colors');
- const [step,setStep]=useState(0);
- const [answer,setAnswer]=useState(null);
- const [paused,setPaused]=useState(false);
+ const [lesson,setLesson]=useState(()=>createFireLesson('colors'));
  const [completedSteps,setCompletedSteps]=useState([]);
  const [selectedCard,setSelectedCard]=useState(null);
  const tr=key=>fireText(locale,key);
  const activities=useMemo(()=>fireTasks(locale),[locale]);
- const tasks=activities.filter(x=>x.topic===topic), current=tasks[step]||tasks[0];
- const currentCorrect=current&&isFireAnswerCorrect(current,answer);
- function openPage(next){setPage(next);setAnswer(null);setPaused(false);}
- function beginTopic(next){setTopic(next);setStep(0);setAnswer(null);setPaused(false);setPage('lesson');}
- function nextQuestion(){setAnswer(null);setStep(x=>x+1);}
- function restartTopic(){setStep(0);setAnswer(null);setPaused(false);}
+ const tasks=activities.filter(x=>x.topic===lesson.topic),current=tasks[lesson.index]??null;
+ const currentCorrect=lesson.status==='correct';
+ function lessonAction(action){setLesson(prev=>advanceFireLesson(prev,action,activities.filter(x=>x.topic===prev.topic)));}
+ function openPage(next){setPage(next);}
+ function beginTopic(next){setLesson(createFireLesson(next));setPage('lesson');}
+ function restartTopic(){lessonAction({type:'RESTART'});}
  function back(){if(page==='lesson')openPage('explore');else openPage('home');}
  return <SafeAreaView style={s.screen}>
   <StatusBar barStyle="light-content" backgroundColor={C.navy}/>
@@ -69,26 +67,33 @@ export default function FireActivities(){
       <Text style={s.bigIcon}>{x.emoji}</Text>
       <Text style={s.topicLabel}>{tr(x.title)}</Text></Pressable>)}</View>
    </>}
-   {page==='lesson'&&current&&<>
-    <Text style={s.eyebrow}>{tr('step')} {step+1} {tr('of')} {tasks.length}</Text>
-    <Text style={T.header}>{tr(fireTopics().find(t=>t.id===topic).title)}</Text>
-    {paused?<Panel><Text style={s.panelTitle}>{tr('pause')}</Text><Pill label={tr('resume')} selected onPress={()=>setPaused(false)}/></Panel>:
+   {page==='lesson'&&lesson.status==='finished'&&<>
+    <Text accessibilityRole="header" style={T.header}>{tr('finished')}</Text>
+    <Panel><Text style={T.sub}>{tr('notSaved')}</Text>
+     <Pill label={tr('again')} onPress={restartTopic} selected/>
+     <Pill label={tr('chooseTopic')} onPress={()=>openPage('explore')}/>
+    </Panel>
+   </>}
+   {page==='lesson'&&lesson.status!=='finished'&&current&&<>
+    <Text style={s.eyebrow}>{tr('step')} {lesson.index+1} {tr('of')} {tasks.length}</Text>
+    <Text style={T.header}>{tr(fireTopics().find(t=>t.id===lesson.topic).title)}</Text>
+    {lesson.paused?<Panel><Text style={s.panelTitle}>{tr('pause')}</Text><Pill label={tr('resume')} selected onPress={()=>lessonAction({type:'TOGGLE_PAUSE'})}/></Panel>:
      <Panel>
        <Text accessibilityRole="header" style={s.prompt}>{current.prompt}</Text>
        <View style={s.grid}>{current.options.map(choice=><Pressable key={choice.id}
-        accessibilityRole="button" accessibilityState={{selected:answer===choice.id,disabled:currentCorrect}}
+        accessibilityRole="button" accessibilityLabel={choice.text} accessibilityState={{selected:lesson.choiceId===choice.id,disabled:currentCorrect}}
         disabled={currentCorrect}
-        onPress={()=>setAnswer(choice.id)}
-        style={[s.option,answer===choice.id&&s.optionSelected]}>
+        onPress={()=>lessonAction({type:'CHOOSE',id:choice.id})}
+        style={[s.option,lesson.choiceId===choice.id&&s.optionSelected]}>
         <Text style={s.bigIcon}>{choice.symbol}</Text><Text style={s.optionLabel}>{choice.text}</Text>
        </Pressable>)}</View>
        <Text accessibilityLiveRegion="polite" style={s.feedback}>
-        {answer?currentCorrect?tr('correct'):tr('tryAgain'):tr('yourTurn')}
+        {lesson.choiceId?currentCorrect?tr('correct'):tr('tryAgain'):tr('yourTurn')}
        </Text>
-       {currentCorrect&&<Pill selected label={step+1===tasks.length?tr('finished'):tr('next')}
-         onPress={()=>step+1===tasks.length?openPage('explore'):nextQuestion()}/>}
+       {currentCorrect&&<Pill selected label={lesson.index+1===tasks.length?tr('completeLesson'):tr('next')}
+         onPress={()=>lessonAction({type:'NEXT'})}/>}
      </Panel>}
-    <View style={s.controls}><Pill label={paused?tr('resume'):tr('pause')} onPress={()=>setPaused(x=>!x)}/>
+    <View style={s.controls}><Pill label={lesson.paused?tr('resume'):tr('pause')} onPress={()=>lessonAction({type:'TOGGLE_PAUSE'})}/>
      <Pill label={tr('reset')} onPress={restartTopic}/></View>
     <Text style={s.small}>{tr('notSaved')}</Text>
    </>}
