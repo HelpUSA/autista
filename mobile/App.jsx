@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {View,Text,Pressable,SafeAreaView,ScrollView,StyleSheet,StatusBar,Image} from 'react-native';
 import {translate,LANGUAGES,DEFAULT_LANGUAGE} from './src/i18n.js';
 const C={navy:'#10304b',teal:'#0f766e',bg:'#f3f7fa',white:'#fff',muted:'#475569',border:'#dbe5ea'};
-const logo='https://raw.githubusercontent.com/HelpUSA/helpus-ai/main/frontend/public/logo-helpus.png';
+const logo=require('./assets/helpus-logo.jpg');
 const steps=[['👋','routineWelcome'],['📚','routineReading'],['🍎','routineSnack'],['🧩','routineMath'],['🌿','routineBreak']];
 const cards=[['💧','water'],['🙋','help'],['🌿','rest']];
 const nav=[['home','home'],['student','students'],['record','record'],['plans','plans'],['dashboard','dashboard']];
@@ -25,7 +25,7 @@ export default function App(){
  const secondaryNav=[['family','family'],['routine','routine'],['activities','activities'],['calm','calm'],['support','support']];
  return <SafeAreaView style={styles.screen}>
   <StatusBar barStyle="light-content" backgroundColor={C.navy}/>
-  <View style={styles.header}><View style={styles.brand}><Image source={{uri:logo}} style={{width:58,height:42,resizeMode:'contain',backgroundColor:C.white,borderRadius:6}} accessibilityLabel="HelpUS"/>
+  <View style={styles.header}><View style={styles.brand}><Image source={logo} style={{width:58,height:42,resizeMode:'contain',backgroundColor:C.white,borderRadius:6}} accessibilityLabel="HelpUS"/>
    <View style={{flex:1}}><Text style={styles.logo}>SINEA</Text><Text style={styles.subtitle}>{t('subtitle')}</Text></View></View>
    <View style={styles.languages}>{LANGUAGES.map(l=><Pressable key={l.id} accessibilityRole="button" accessibilityState={{selected:locale===l.id}} onPress={()=>setLocale(l.id)} style={[styles.lang,locale===l.id?styles.langActive:null]}><Text style={{color:C.white,fontWeight:'700',fontSize:12}}>{l.short}</Text></Pressable>)}</View>
   </View>

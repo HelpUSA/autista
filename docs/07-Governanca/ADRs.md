@@ -26,7 +26,7 @@ tags:
 **Estado:** implementado na UI web V2. Padrão `pt-BR`, com `en-US` e `es-ES`, dicionário centralizado e seletor persistente no cabeçalho. Mobile/PDF/e-mail ainda pendentes.
 
 ## ADR-005 · Identidade HelpUS + Evoluce
-**Estado:** provisório. Usar token azul-marinho/turquesa e imagem HelpUS encontrada em outro repositório oficial, com obrigação de copiar asset autorizado local antes do release.
+**Estado:** provisório. Usar azul-marinho/turquesa e logo HelpUS já copiada dos ativos do repositório HelpUSA/helpus-ai para web/mobile; aprovação contratual de marca e validação visual são pendentes.
 
 ## ADR-006 · Comunicação escola–família
 **Estado:** proposta aprovada pelo usuário para implementação. Separar diário técnico e resumo familiar revisado, comunicados, canais, calendário, autorização e confirmação de leitura.

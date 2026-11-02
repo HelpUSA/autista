@@ -5,7 +5,7 @@ import {canPreview} from './demoPolicy.js';
 import {LANGUAGES,DEFAULT_LANGUAGE,normalizeLocale,translate} from './i18n.js';
 import {localizeDemo} from './demoLocale.js';
 
-const BRAND_LOGO='https://raw.githubusercontent.com/HelpUSA/helpus-ai/main/frontend/public/logo-helpus.png';
+const BRAND_LOGO='/brand/helpus-logo.jpg';
 const cn=(...s)=>s.filter(Boolean).join(' ');
 const card='rounded-2xl border border-slate-200 bg-white shadow-sm';
 const btn='inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-teal-500';

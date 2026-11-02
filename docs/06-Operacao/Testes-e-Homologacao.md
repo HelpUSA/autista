@@ -22,7 +22,7 @@ tags:
 - Audit de dependências: runtime deve estar sem advisories alta/crítica.
 
 ## E2E responsivo
-320, 375, 768, 1024, 1440 px; foco sem mouse, menu inferior e sidebar desktop, sem overflow ou sobreposição; logo HelpUS visível em falha de rede e sem layout shift; trocas PT→EN→ES em cada tela.
+320, 375, 768, 1024, 1440 px; foco sem mouse, menu inferior e sidebar desktop, sem overflow ou sobreposição; logo HelpUS local visível sem conexão externa e sem layout shift; trocas PT→EN→ES em cada tela.
 
 ## Jornada família
 Comunicado fictício, confirmação de leitura somente em memória, canais segmentados, calendário e autorização em modo somente leitura. Garantir que sem login real não há mensagem nem dado real.

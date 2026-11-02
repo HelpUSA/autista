@@ -23,7 +23,7 @@ tags:
 - [ ] Rodar lint/smoke/build/test e registrar SHA.
 - [ ] Homologar UI desktop/mobile, três idiomas, menu, fluxo diário, comunicação, notificações fictícias.
 - [ ] Comparar cores, hierarquia, logo e 5 botões inferiores ao PDF.
-- [ ] Verificar se `https://raw.githubusercontent.com/HelpUSA/helpus-ai/main/frontend/public/logo-helpus.png` atende e copiar asset oficial para `public/brand/helpus-logo.png` com autorização; atualizar caminho e registrar SHA256.
+- [ ] Validar a imagem HelpUS local em `public/brand/helpus-logo.jpg` e `mobile/assets/helpus-logo.jpg`, copiada byte a byte do repositório oficial HelpUSA/helpus-ai, SHA Git `5fd4cb3ab76399f6d6200f9a897bea95124cf0c3`; registrar SHA-256 e autorização de marca antes de deploy.
 - [ ] Revisar tradução de rótulos da demo, mobile Expo, templates de email, notificações e PDF.
 - [ ] Conferir docs Obsidian com backlinks em `docs/00-Inicio.md` e Mermaid.
 - [ ] Não migrar dados reais, nem permitir envio de mensagens ou registros sem auth e base legal.

@@ -23,10 +23,10 @@ A interface respeita o briefing Evoluce, com presença institucional HelpUS. Cor
 - cinzas da escala Tailwind para textos de apoio.
 
 ### Logo
-Foi localizada a imagem `frontend/public/logo-helpus.png` em `HelpUSA/helpus-ai`, a mesma usada em `HelpUSA/nexosai-frontend/public/helpus_logo.png`. Na demonstração, `SineaAppV2.jsx` usa temporariamente o recurso remoto `raw.githubusercontent.com/HelpUSA/helpus-ai/main/frontend/public/logo-helpus.png`.
+Foi localizada a imagem `frontend/public/logo-helpus.png` em `HelpUSA/helpus-ai`, a mesma usada em `HelpUSA/nexosai-frontend/public/helpus_logo.png`. A identidade oficial foi incorporada em `public/brand/helpus-logo.jpg` (web) e `mobile/assets/helpus-logo.jpg` (Expo), reutilizando o blob SHA Git `5fd4cb3ab76399f6d6200f9a897bea95124cf0c3` do repositório `HelpUSA/helpus-ai`. Apesar do nome original `.png`, os bytes possuem assinatura JPEG, preservados sem edição.
 
 > [!warning] Gate de marca
-> Copiar o arquivo oficial para `public/brand/helpus-logo.png` com autorização da HelpUS, fixar hash, confirmar direitos de uso, atualizar caminhos e eliminar dependência remota antes de produção. Nunca inventar ou redesenhar logo de terceiros.
+> Ativo copiado com bytes idênticos e hash Git preservado. Confirmar aprovação contratual de uso de marca HelpUS no projeto Evoluce, testar renderização web/native e registrar o SHA-256 do binário durante a homologação antes da publicação.
 
 ## Layout e grid
 - Mobile primeiro, mínimo 320 px, menu inferior com Início, Estudantes, Registrar, Planos e Painel.
