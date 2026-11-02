@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readLocalePreference,writeLocalePreference,localeStorageKey} from './localePreference.js';
+import {readLocalePreference,writeLocalePreference,localeStorageKey,safeBrowserStorage} from './localePreference.js';
 test('somente idioma é gravado e carregado, sem perfis nem alunos',()=>{
  const entries=new Map();
  const s={getItem:k=>entries.get(k)??null,setItem:(k,v)=>entries.set(k,v)};
@@ -15,4 +15,8 @@ test('preferências inválidas e bloqueio de storage não quebram a UI',()=>{
  assert.equal(writeLocalePreference(s,'en-US'),false);
  assert.equal(readLocalePreference({getItem:()=>'unknown'}),'pt-BR');
  assert.equal(writeLocalePreference({setItem:()=>{}},'unknown'),true);
+});
+
+test('sem navegador, a leitura do armazenamento é segura',()=>{
+ assert.equal(safeBrowserStorage(),null);
 });

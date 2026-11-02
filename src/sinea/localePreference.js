@@ -17,3 +17,8 @@ export function writeLocalePreference(storage,locale){
   catch {return false;}
 }
 export function localeStorageKey(){return KEY;}
+export function safeBrowserStorage(){
+  try {return typeof window==='undefined'?null:window.localStorage;}
+  catch {return null;}
+}
+

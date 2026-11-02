@@ -5,7 +5,7 @@ import {canPreview} from './demoPolicy.js';
 import {LANGUAGES,DEFAULT_LANGUAGE,normalizeLocale,translate} from './i18n.js';
 import {localizeDemo} from './demoLocale.js';
 import {demoHomeMetrics,displayDemoNumber,visibleDemoAppointments,visibleDemoTasks} from './demoMetrics.js';
-import {readLocalePreference,writeLocalePreference} from './localePreference.js';
+import {readLocalePreference,writeLocalePreference,safeBrowserStorage} from './localePreference.js';
 import {canOpenDemoScreen,landingDemoScreen,resolveDemoScreen,visibleDemoNavigation,studentVisibleToDemoRole} from './navigationPolicy.js';
 
 const BRAND_LOGO='/brand/helpus-logo.jpg';
@@ -212,7 +212,7 @@ function SupportPage({t}){
  </>;
 }
 export default function SineaApp(){
- const [language,setLanguage]=useState(()=>readLocalePreference(typeof window==='undefined'?null:window.localStorage));
+ const [language,setLanguage]=useState(()=>readLocalePreference(safeBrowserStorage()));
  const t=key=>translate(language,key);
  const l=value=>localizeDemo(language,value);
  const [role,setRole]=useState('aee');
@@ -220,7 +220,7 @@ export default function SineaApp(){
  const [studentId,setStudentId]=useState(students[0].id);
  const [menu,setMenu]=useState(false);
  const student=students.find(s=>s.id===studentId)??students[0];
- useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');writeLocalePreference(window.localStorage,language);},[language]);
+ useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');writeLocalePreference(safeBrowserStorage(),language);},[language]);
  function changeRole(next){setRole(next);setScreen(landingDemoScreen(next));setStudentId(students[0].id);setMenu(false);}
  function go(next){setScreen(resolveDemoScreen(role,next));setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
  function openStudent(id){if(!studentVisibleToDemoRole(role,id,students.map(s=>s.id)))return;setStudentId(id);go('studentDetail');}
