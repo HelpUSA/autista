@@ -3,6 +3,7 @@ import {ArrowLeft,BarChart3,Bell,BookOpen,CalendarDays,Check,CheckCheck,ChevronR
 import {students,agenda,pending,planGoals,timeline,networkMetrics,networkNeeds,calmItems} from './demoData.js';
 import {canPreview} from './demoPolicy.js';
 import {LANGUAGES,DEFAULT_LANGUAGE,normalizeLocale,translate} from './i18n.js';
+import {localizeDemo} from './demoLocale.js';
 
 const BRAND_LOGO='https://raw.githubusercontent.com/HelpUSA/helpus-ai/main/frontend/public/logo-helpus.png';
 const cn=(...s)=>s.filter(Boolean).join(' ');
@@ -44,14 +45,14 @@ function PanelTitle({title,eyebrow,action}){
 }
 function Note({t}){return <div role="note" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950"><ShieldCheck className="mr-2 inline" size={17}/>{t('demo')}</div>;}
 function Metric({title,value}){return <div className={cn(card,'p-4 min-w-0')}><p className="text-xs font-medium text-slate-600 sm:text-sm">{title}</p><strong className="mt-2 block text-xl font-extrabold text-[#10304b] sm:text-3xl">{value}</strong></div>;}
-function StudentTile({s,t,onOpen}){return <button type="button" onClick={()=>onOpen(s.id)} className={cn(card,'w-full p-4 text-left hover:border-teal-500 focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-500')}>
- <span className="flex gap-3 items-center"><span aria-hidden="true" className="h-12 w-12 shrink-0 rounded-xl bg-teal-100 grid place-items-center font-extrabold text-teal-900">{s.initials}</span><span className="min-w-0 flex-1"><strong className="block text-[#10304b]">{s.name}</strong><span className="block text-sm text-slate-600">{s.age} · {s.className}</span></span><ChevronRight size={18}/></span>
- <div className="flex flex-wrap gap-2 mt-4">{s.tags.map(tag=><span className="rounded-full bg-teal-50 border border-teal-100 text-teal-800 px-2 py-1 text-xs" key={tag}>{tag}</span>)}</div>
+function StudentTile({s,t,onOpen,l}){return <button type="button" onClick={()=>onOpen(s.id)} className={cn(card,'w-full p-4 text-left hover:border-teal-500 focus-visible:outline focus-visible:outline-4 focus-visible:outline-teal-500')}>
+ <span className="flex gap-3 items-center"><span aria-hidden="true" className="h-12 w-12 shrink-0 rounded-xl bg-teal-100 grid place-items-center font-extrabold text-teal-900">{s.initials}</span><span className="min-w-0 flex-1"><strong className="block text-[#10304b]">{s.name}</strong><span className="block text-sm text-slate-600">{s.age} · {l(s.className)}</span></span><ChevronRight size={18}/></span>
+ <div className="flex flex-wrap gap-2 mt-4">{s.tags.map(tag=><span className="rounded-full bg-teal-50 border border-teal-100 text-teal-800 px-2 py-1 text-xs" key={tag}>{l(tag)}</span>)}</div>
  <div className="mt-3 h-2.5 rounded-full bg-slate-100"><div className="h-2.5 rounded-full bg-teal-600" style={{width:s.goalPercent+'%'}}/></div>
  <p className="text-xs mt-2 text-slate-600">{t('goalProgress')} · {s.goalPercent}%</p>
  </button>;
 }
-function HomePage({t,role,onStudent,onGo}){
+function HomePage({t,role,onStudent,onGo,l}){
  const family=role==='familia';
  return <>
   <div className="rounded-2xl bg-gradient-to-r from-[#10304b] to-[#116a79] p-5 text-white sm:p-8">
@@ -67,40 +68,40 @@ function HomePage({t,role,onStudent,onGo}){
   <div className="grid gap-5 lg:grid-cols-5">
    <section className="lg:col-span-3"><PanelTitle title={t('today')} eyebrow={t('calendar')}/>
     <div className={cn(card,'divide-y divide-slate-100')}>
-     {agenda.map(row=>{const s=students.find(st=>st.id===row.studentId);return <button type="button" key={row.id} onClick={()=>onStudent(s.id)} className="flex w-full items-center gap-3 px-4 py-4 text-left hover:bg-teal-50">
-       <span className="shrink-0 text-sm font-bold text-teal-800">{row.time}</span><span className="flex-1"><strong className="block text-sm text-[#10304b]">{s.name}</strong><span className="text-xs text-slate-600">{row.location}</span></span><ChevronRight size={16}/></button>;})}
+     {agenda.filter(row=>role!=='familia'||row.studentId===students[0].id).map(row=>{const s=students.find(st=>st.id===row.studentId);return <button type="button" key={row.id} onClick={()=>onStudent(s.id)} className="flex w-full items-center gap-3 px-4 py-4 text-left hover:bg-teal-50">
+       <span className="shrink-0 text-sm font-bold text-teal-800">{row.time}</span><span className="flex-1"><strong className="block text-sm text-[#10304b]">{s.name}</strong><span className="text-xs text-slate-600">{l(row.location)}</span></span><ChevronRight size={16}/></button>;})}
     </div>
    </section>
    <section className="lg:col-span-2"><PanelTitle title={t('pending')} eyebrow={t('notifications')}/>
-    <div className={cn(card,'divide-y divide-slate-100')}>{pending.map(p=><div key={p.id} className="px-4 py-3"><p className="text-xs font-bold text-amber-800">{p.deadline}</p><p className="text-sm font-semibold text-[#10304b]">{t('review')} · {p.detail}</p></div>)}</div>
+    <div className={cn(card,'divide-y divide-slate-100')}>{pending.filter(p=>role!=='familia'||p.studentId===students[0].id).map(p=><div key={p.id} className="px-4 py-3"><p className="text-xs font-bold text-amber-800">{l(p.deadline)}</p><p className="text-sm font-semibold text-[#10304b]">{t('review')} · {l(p.detail)}</p></div>)}</div>
     <button className={cn(softBtn,'mt-3 w-full')} onClick={()=>onGo('family')}><MessageCircle size={17}/>{t('family')}<ChevronRight size={16}/></button>
    </section>
   </div>
  </>;
 }
-function StudentsPage({t,onStudent,role}){
+function StudentsPage({t,onStudent,role,l}){
  const [term,setTerm]=useState('');
  const list=(role==='familia'?[students[0]]:students).filter(s=>s.name.toLocaleLowerCase().includes(term.toLocaleLowerCase()));
  return <><PanelTitle title={t('students')} eyebrow={t('studentRecord')}/>
   <label className="mb-5 flex max-w-xl items-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3"><Search size={18}/><span className="sr-only">{t('search')}</span>
     <input value={term} onChange={e=>setTerm(e.target.value)} placeholder={t('search')} className="min-w-0 flex-1 bg-transparent text-sm outline-none"/></label>
-  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{list.map(s=><StudentTile key={s.id} s={s} t={t} onOpen={onStudent}/>)}</div>
+  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{list.map(s=><StudentTile key={s.id} s={s} t={t} l={l} onOpen={onStudent}/>)}</div>
  </>;
 }
-function StudentDetail({t,student,onBack,onGo,role}){
+function StudentDetail({t,student,onBack,onGo,role,l}){
  const [tab,setTab]=useState('overview');
  const family=role==='familia';
  return <>
   <button className={cn(softBtn,'mb-5')} onClick={onBack}><ArrowLeft size={16}/>{t('back')}</button>
   <div className={cn(card,'p-5')}><PanelTitle title={student.name} eyebrow={t('studentRecord')}/>
-   <p className="text-slate-600 text-sm">{student.age} · {student.className} · {t('sampleSchool')}</p>
+   <p className="text-slate-600 text-sm">{student.age} · {l(student.className)} · {t('sampleSchool')}</p>
   </div>
   <div role="tablist" aria-label={t('studentRecord')} className="my-4 flex gap-2 overflow-x-auto pb-2">
    {['overview','plans','routine','dailyTitle','schoolHistory'].map(key=><button key={key} role="tab" aria-selected={tab===key} onClick={()=>setTab(key)} className={cn(btn,'shrink-0',tab===key?'border-teal-700 bg-teal-700 text-white':'border-slate-200 bg-white')}>{t(key)}</button>)}
   </div>
   {tab==='overview'&&<div className="grid gap-4 sm:grid-cols-3">
     <Metric title={t('years')} value={student.historyYears}/><Metric title={t('appointments')} value={student.appointments}/><Metric title={t('goalProgress')} value={student.goalPercent+'%'}/>
-    <section className={cn(card,'p-5 sm:col-span-2')}><h2 className="font-bold text-[#10304b]">{t('supports')}</h2><div className="mt-3 flex flex-wrap gap-2">{student.needs.map(n=><span key={n} className="rounded-lg bg-teal-50 p-2 text-xs text-teal-900">{n}</span>)}</div></section>
+    <section className={cn(card,'p-5 sm:col-span-2')}><h2 className="font-bold text-[#10304b]">{t('supports')}</h2><div className="mt-3 flex flex-wrap gap-2">{student.needs.map(n=><span key={n} className="rounded-lg bg-teal-50 p-2 text-xs text-teal-900">{l(n)}</span>)}</div></section>
     {!family&&<section className={cn(card,'p-5')}><h2 className="font-bold text-[#10304b]">{t('documents')}</h2><p className="mt-3 text-xs text-amber-800">{t('docsNotAvailable')}</p></section>}
   </div>}
   {tab==='plans'&&<PlanPage t={t} student={student}/>}
@@ -193,10 +194,10 @@ function CalmPage({t}){
  <p className="mt-5 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">{t('demoLocked')}</p>
  </div></>;
 }
-function NetworkPage({t}){
+function NetworkPage({t,l}){
  return <><PanelTitle title={t('dashboardTitle')} eyebrow={t('aggregates')}/>
   <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">{[['schools','24'],['activePlans','1.280'],['records','8.460'],['coverage','92%']].map(([k,value])=><Metric key={k} title={t(k)} value={value}/>)}</div>
-  <div className={cn(card,'mt-5 p-5')}><h2 className="font-bold text-[#10304b]">{t('distribution')}</h2><div className="mt-5 grid gap-3 sm:grid-cols-2">{networkNeeds.map(n=><div key={n.label}><p className="mb-1 flex justify-between text-sm"><span>{n.label}</span><strong>{n.percent}%</strong></p><div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full" style={{width:n.percent+'%',background:n.color}}/></div></div>)}</div>
+  <div className={cn(card,'mt-5 p-5')}><h2 className="font-bold text-[#10304b]">{t('distribution')}</h2><div className="mt-5 grid gap-3 sm:grid-cols-2">{networkNeeds.map(n=><div key={n.label}><p className="mb-1 flex justify-between text-sm"><span>{l(n.label)}</span><strong>{n.percent}%</strong></p><div className="h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full" style={{width:n.percent+'%',background:n.color}}/></div></div>)}</div>
   <p className="mt-6 text-sm text-amber-900">{t('noIdentify')}</p></div>
  </>;
 }
@@ -208,6 +209,7 @@ function SupportPage({t}){
 export default function SineaApp(){
  const [language,setLanguage]=useState(DEFAULT_LANGUAGE);
  const t=key=>translate(language,key);
+ const l=value=>localizeDemo(language,value);
  const [role,setRole]=useState('aee');
  const [screen,setScreen]=useState('home');
  const [studentId,setStudentId]=useState(students[0].id);
@@ -215,7 +217,7 @@ export default function SineaApp(){
  const student=students.find(s=>s.id===studentId)??students[0];
  useEffect(()=>{document.documentElement.lang=language;document.title='SINEA | '+t('subtitle');},[language]);
  function changeRole(next){setRole(next);setScreen(next==='secretaria'?'dashboard':'home');setMenu(false);}
- function go(next){setScreen(next);setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
+ function go(next){if(role==='secretaria' && next!=='dashboard')next='dashboard'; if(role==='familia'&&next==='record')next='family';setScreen(next);setMenu(false);window.scrollTo?.({top:0,behavior:'instant'});}
  function openStudent(id){if(role==='secretaria')return; if(role==='familia'&&id!==students[0].id)return;setStudentId(id);go('studentDetail');}
  const mainNav=navItems.filter(([key])=>role!=='secretaria'||key==='dashboard').filter(([key])=>role!=='familia'||key!=='record');
  const extraNav=[['family',MessageCircle],['routine',CalendarDays],['activities',BookOpen],['calm',HeartHandshake],['support',Settings2]];
@@ -238,12 +240,12 @@ export default function SineaApp(){
    <main id="main-content" className="min-w-0 pb-28 lg:pb-10">
     <Note t={t}/>
     <div className="mt-5">
-     {screen==='home'&&<HomePage t={t} role={role} onStudent={openStudent} onGo={go}/>}
-     {screen==='students'&&<StudentsPage t={t} role={role} onStudent={openStudent}/>}
-     {screen==='studentDetail'&&<StudentDetail t={t} student={student} role={role} onBack={()=>go('students')} onGo={go}/>}
+     {screen==='home'&&<HomePage t={t} l={l} role={role} onStudent={openStudent} onGo={go}/>}
+     {screen==='students'&&<StudentsPage t={t} l={l} role={role} onStudent={openStudent}/>}
+     {screen==='studentDetail'&&<StudentDetail t={t} l={l} student={student} role={role} onBack={()=>go('students')} onGo={go}/>}
      {screen==='record'&&<DiaryPage t={t} role={role}/>}
      {screen==='plans'&&<PlanPage t={t}/>}
-     {screen==='dashboard'&&<NetworkPage t={t}/>}
+     {screen==='dashboard'&&<NetworkPage t={t} l={l}/>}
      {screen==='family'&&<FamilyPage t={t} role={role}/>}
      {screen==='routine'&&<RoutinePage t={t}/>}
      {screen==='activities'&&<ActivityPage t={t} language={language}/>}
